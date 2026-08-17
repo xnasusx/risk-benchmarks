@@ -1,0 +1,2024 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "repo": "https://github.com/raviaxo/RiskShard",
+    "commit": "96640e67957f4cb59607fc0a8daee8bc379bd59d",
+    "license": "AGPL-3.0-or-later"
+  },
+  "tiers": {
+    "module_governed": "Upstream carries a risk_module manifest tying the scenario to an org profile, a calibration record and its evidence, plus a practitioner statement of what it is not good for.",
+    "evidence_backed": "Every parameter traces to a source_backed evidence record on the same bar, but there is no module manifest: no calibration rationale, no practitioner review, and no stated not_good_for. Read confidence_summary before using one."
+  },
+  "usage_notes": [
+    "Every number here is a starting point, not a benchmark. Check maturity.benchmark_status.",
+    "Check provenance_tier. evidence_backed shards clear the same evidence bar but carry no practitioner review.",
+    "confidence_summary counts parameters by confidence level; a shard that is all-low is not a benchmark.",
+    "not_good_for states, per shard, what the numbers will not support.",
+    "provenance is keyed by dot-path parameter; each entry carries its own source and limitations.",
+    "Currencies differ across shards. Do not aggregate without converting first.",
+    "Entries under `examples` have no provenance and are illustrative only."
+  ],
+  "benchmarks": [
+    {
+      "id": "au_finance_bec_midmarket",
+      "title": "Australia Finance Business Email Compromise Midmarket",
+      "threat": "business_email_compromise",
+      "status": "governed_starter",
+      "provenance_tier": "module_governed",
+      "confidence_summary": {
+        "medium": 3,
+        "low": 3
+      },
+      "country": "AU",
+      "industry": "financial_services",
+      "company_size": "mid_market",
+      "currency": "AUD",
+      "maturity": {
+        "scenario_stage": "governed_starter",
+        "benchmark_status": "starter_with_source_backed_floor_and_loss_anchors"
+      },
+      "description": "Starter Australia financial-services BEC shard. Calibration uses an ACCC/ABS reported-loss frequency floor, a source-backed FBI IC3 complaint-average likely loss anchor converted to AUD, and an AFP-documented single-event Australian BEC loss as the stress anchor. Frequency likely and max are source-backed all-cyber bridges, so they overstate BEC-only exposure.",
+      "frequency": {
+        "min": 0.00010514176186819692,
+        "likely": 0.21,
+        "max": 0.81,
+        "unit": "events_per_year"
+      },
+      "impact": {
+        "min": 33000,
+        "likely": 170000,
+        "max": 2670000,
+        "unit": "currency_per_event"
+      },
+      "loss_stages": [],
+      "org_profile": {
+        "employees": 450,
+        "annual_revenue_or_budget": 85000000,
+        "regulatory_intensity": "high"
+      },
+      "not_good_for": "Benchmark-grade BEC likely frequency or tail-loss decisions.",
+      "good_for": "Reviewing BEC impact evidence, Australia reported-loss floors, and remaining frequency gaps.",
+      "tags": [
+        "au",
+        "financial_services",
+        "mid_market",
+        "bec",
+        "fraud"
+      ],
+      "provenance": {
+        "frequency.min": {
+          "rationale": "Conservative Australia reported-loss floor from ACCC Scamwatch loss reports divided by ABS active-business denominator.",
+          "transform": "direct",
+          "evidence_id": "accc_abs_au_small_business_scam_loss_report_rate_floor_2025",
+          "source_name": "ACCC Targeting Scams Report 2025 and ABS Counts of Australian Businesses 2024-25",
+          "source_type": "derived_scam_statistical_benchmark",
+          "url": "https://www.accc.gov.au/system/files/targeting-scams-report-2025.pdf",
+          "publication_date": "2026-03-30",
+          "citation_detail": "ACCC small-business section reported 287 small-business reports with financial loss; ABS reported 2,729,648 active Australian businesses at 30 June 2025.",
+          "limitations": "Scamwatch loss reports are not complete BEC events, not financial-services-specific, and the denominator is all Australian businesses rather than mid-market financial-services firms.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "reported_case_rate",
+          "value": 0.00010514176186819692
+        },
+        "frequency.likely": {
+          "rationale": "Source-backed AU org-level exposure bridge (ABS 2024-25, 21% of businesses experienced a cyber security incident); all-cyber, overstates BEC-only.",
+          "transform": "direct",
+          "evidence_id": "abs_2025_au_business_cyber_incident_prevalence_frequency_likely",
+          "source_name": "Characteristics of Australian Business, 2024-25",
+          "source_type": "official_statistics_bridge",
+          "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/characteristics-australian-business/2024-25",
+          "publication_date": "2026-06-25",
+          "citation_detail": "ABS reports that just over one in five (21%) of Australian businesses experienced a cyber security incident during 2024-25.",
+          "limitations": "All-industry, all-size, all-cyber measure, not BEC-specific and not mid-market-financial-services-specific; it counts businesses experiencing any cyber security incident, not confirmed BEC loss events, so it overstates BEC-only frequency. Revise when BEC-specific AU mid-market evidence is reviewed.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_incident",
+          "value": 0.21
+        },
+        "frequency.max": {
+          "rationale": "Source-backed AU mid-sized finance stress bridge (MYOB/Dynata 2024, 81% of finance and insurance mid-sized businesses attacked); vendor survey, all-cyber.",
+          "transform": "direct",
+          "evidence_id": "myob_2024_au_finance_midsized_cyber_prevalence_frequency_stress",
+          "source_name": "MYOB mid-sized business cyber attack survey 2024",
+          "source_type": "industry_survey_bridge",
+          "url": "https://cfotech.com.au/story/cyber-attacks-impact-60-of-mid-sized-australian-businesses",
+          "publication_date": "2024-06-01",
+          "citation_detail": "MYOB survey (by Dynata, fieldwork 22 March - 15 April 2024, n=593 mid-sized Australian businesses) reports 81% of finance and insurance mid-sized businesses experienced a cyber attack, versus 60% of mid-sized businesses overall.",
+          "limitations": "Commercial vendor survey (MYOB/Dynata), lower trust than official statistics; measures all cyber attacks, not BEC-specific, and counts businesses experiencing an attack rather than confirmed BEC loss events; mid-sized defined as 20-500 FTE with revenue over AUD 5M. Revise when official AU finance mid-market BEC frequency is available.",
+          "confidence": "low",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_incident",
+          "value": 0.81
+        },
+        "impact.min": {
+          "rationale": "Australia small-business Scamwatch average loss per loss report as a source-backed lower impact floor.",
+          "transform": "direct",
+          "evidence_id": "accc_2025_small_business_average_scam_loss_aud",
+          "source_name": "ACCC Targeting Scams Report 2025",
+          "source_type": "scam_report",
+          "url": "https://www.accc.gov.au/system/files/targeting-scams-report-2025.pdf",
+          "publication_date": "2026-03-30",
+          "citation_detail": "Small-business Scamwatch section reports AUD 9.5 million losses and 287 small-business reports with financial loss in 2025.",
+          "limitations": "Scam-wide small-business average from Scamwatch reports, not BEC-only, financial-services-specific, mid-market-specific, or a full severity distribution.",
+          "confidence": "low",
+          "evidence_type": "source_backed",
+          "measurement_basis": "mean_total_event_cost",
+          "value": 33000
+        },
+        "impact.likely": {
+          "rationale": "Source-backed FBI IC3 BEC average adjusted loss per complaint, converted to AUD as the first likely loss anchor.",
+          "transform": "currency_convert",
+          "evidence_id": "fbi_ic3_2025_bec_average_loss_per_complaint_usd",
+          "source_name": "FBI IC3 2025 Annual Report",
+          "source_type": "law_enforcement_report",
+          "url": "https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf",
+          "publication_date": "2026-04-16",
+          "citation_detail": "2025 Crime Types tables list Business Email Compromise with 24,768 complaints and USD 3,046,598,558 in adjusted losses.",
+          "limitations": "US IC3 complaint population; self-reported and complaint-driven; not Australia-specific, financial-services-specific, mid-market-specific, or a full loss distribution.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "mean_total_event_cost",
+          "value": 170000
+        },
+        "impact.max": {
+          "rationale": "One documented Australian BEC event (AFP taskforce case, September 2020, AUD 2,668,483 gross across two transfers) used as the stress anchor. Replaces the ACCC false-billing aggregate, which measured a whole-country small-business loss total and could never bound one firm's event.",
+          "transform": "direct",
+          "evidence_id": "afp_2020_au_bec_documented_single_event_loss_aud",
+          "source_name": "AFP media release - Business Email Compromise cost Australian victims more than $79 million in the past year",
+          "source_type": "law_enforcement_report",
+          "url": "https://www.afp.gov.au/news-centre/media-release/business-email-compromise-cost-australian-victims-more-79-million-past",
+          "publication_date": "2021-07-10",
+          "citation_detail": "BEC taskforce section: \"In one case in September 2020, the taskforce assisted an Australian business, which was compromised when offenders who claimed to be staff sent internal invoice emails to the company's finance area, but with altered bank details. The business processed two payments within a few days - transferring $519,545 and then $2,148,938 to a Singaporean bank account.\" The release adds that \"$2.1 million of the $2.6 million was recovered.\"",
+          "limitations": "One documented case, not a modeled tail quantile and not a loss distribution - it establishes that an event of this size happened in Australia, not how often it happens or how much worse it gets. The victim is described only as \"an Australian business\", so sector and size are unknown and financial-services mid-market applicability is dilution rather than measurement. The 2020/21 vintage predates current payment-verification controls. Revise when an Australian BEC loss distribution with tail quantiles is published.",
+          "confidence": "low",
+          "evidence_type": "source_backed",
+          "measurement_basis": "single_documented_event_loss",
+          "value": 2670000
+        }
+      },
+      "sourced_parameters": 6,
+      "total_parameters": 6,
+      "source_files": {
+        "module": "risk_modules/au_finance_bec_midmarket.yaml",
+        "scenario": "scenarios/business_email_compromise.yaml",
+        "calibration": "calibrations/au_finance_business_email_compromise.yaml",
+        "evidence": [
+          "evidence/au_finance_bec.yaml"
+        ]
+      },
+      "label": "AU · Australia Finance Business Email Compromise Midmarket",
+      "scope": "AU · financial services · business email compromise"
+    },
+    {
+      "id": "au_finance_data_breach_midmarket",
+      "title": "Australia Finance Data Breach Midmarket",
+      "threat": "data_breach",
+      "status": "benchmark_review_candidate",
+      "provenance_tier": "module_governed",
+      "confidence_summary": {
+        "medium": 6
+      },
+      "country": "AU",
+      "industry": "financial_services",
+      "company_size": "mid_market",
+      "currency": "AUD",
+      "maturity": {
+        "scenario_stage": "governed_starter",
+        "benchmark_status": "starter_with_source_backed_impact"
+      },
+      "description": null,
+      "frequency": {
+        "min": 0.0008,
+        "likely": 0.65,
+        "max": 0.69,
+        "unit": "events_per_year"
+      },
+      "impact": {
+        "min": 97000,
+        "likely": 6300000,
+        "max": 50000000,
+        "unit": "currency_per_event"
+      },
+      "loss_stages": [],
+      "org_profile": {
+        "employees": 450,
+        "annual_revenue_or_budget": 85000000,
+        "regulatory_intensity": "high"
+      },
+      "not_good_for": "Public benchmark-grade Australia mid-market breach likelihood or total-loss claims without human review accepting UK frequency/cost bridges and a statutory penalty-cap stress anchor.",
+      "good_for": "Running an assumption-free starter while reviewing local AU breach-prevalence gaps, the UK industry cost bridge, and cost-anchor selection.",
+      "tags": [
+        "au",
+        "financial_services",
+        "mid_market",
+        "data_breach"
+      ],
+      "provenance": {
+        "frequency.min": {
+          "rationale": "Source-derived reported NDB notification floor from OAIC finance notifications and ABS Financial and Insurance Services business counts.",
+          "transform": "direct",
+          "evidence_id": "oaic_abs_au_finance_ndb_notification_rate_floor_2025",
+          "source_name": "OAIC NDB Report July-Dec 2024 and ABS Counts of Australian Businesses 2024-25",
+          "source_type": "derived_regulator_statistical_benchmark",
+          "url": "https://www.oaic.gov.au/__data/assets/pdf_file/0021/251184/Notifiable-data-breaches-report-July-to-December-2024.pdf",
+          "publication_date": "2025-05-13",
+          "citation_detail": "OAIC Page 15, Table 5 reported 54 finance notifications for July-Dec 2024; ABS industry section reported 133,743 Financial and Insurance Services businesses in 2024-25.",
+          "limitations": "Covers eligible Australian NDB notifications only; all-size sector denominator is not mid-market-specific; multiple notifications by one entity and unreported/non-reportable breaches can distort organization-level probability. Confidence is medium for a reported-notification floor, not for a likely breach rate.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "reported_case_rate",
+          "value": 0.0008
+        },
+        "frequency.likely": {
+          "rationale": "Source-backed UK official medium-business cyber breach/attack prevalence bridge selected until AU mid-market financial-services prevalence evidence exists.",
+          "transform": "direct",
+          "evidence_id": "uk_dsit_2026_medium_business_breach_prevalence_au_bridge",
+          "source_name": "Cyber Security Breaches Survey 2025/2026",
+          "source_type": "official_statistics_bridge",
+          "url": "https://www.gov.uk/government/statistics/cyber-security-breaches-survey-20252026/cyber-security-breaches-survey-20252026",
+          "publication_date": "2026-04-30",
+          "citation_detail": "Summary and Chapter 4 report that 65% of UK medium businesses identified a cyber security breach or attack in the last 12 months.",
+          "limitations": "UK official survey; covers identified cyber breaches or attacks, not privacy-only data breaches; not Australia-specific, not financial-services-specific, and may include high-volume low-impact events.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_incident",
+          "value": 0.65
+        },
+        "frequency.max": {
+          "rationale": "Source-backed UK official large-business breach/attack prevalence bridge selected as a stress-frequency proxy until AU tail-prevalence evidence exists.",
+          "transform": "direct",
+          "evidence_id": "uk_dsit_2026_large_business_breach_prevalence_au_stress_bridge",
+          "source_name": "Cyber Security Breaches Survey 2025/2026",
+          "source_type": "official_statistics_bridge",
+          "url": "https://www.gov.uk/government/statistics/cyber-security-breaches-survey-20252026/cyber-security-breaches-survey-20252026",
+          "publication_date": "2026-04-30",
+          "citation_detail": "Summary and Chapter 4 report that 69% of UK large businesses identified a cyber security breach or attack in the last 12 months.",
+          "limitations": "UK official survey; covers identified cyber breaches or attacks, not privacy-only data breaches; large-business prevalence can overstate mid-market likelihood; not Australia-specific or financial-services-specific.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_incident",
+          "value": 0.69
+        },
+        "impact.min": {
+          "rationale": "Locally gathered Australian medium-business cybercrime cost floor used conservatively until data-breach-specific Australian cost-floor evidence exists.",
+          "transform": "direct",
+          "evidence_id": "business_qld_au_medium_business_cybercrime_cost_data_breach_floor_2025",
+          "source_name": "Business Queensland Keeping your business cyber secure",
+          "source_type": "government_business_guidance",
+          "url": "https://www.business.qld.gov.au/running-business/digital-business/online-risk-security/cyber-security",
+          "publication_date": "2025-10-23",
+          "citation_detail": "Page section \"Keeping your business cyber secure\"; average cost of cybercrime in Australia list.",
+          "limitations": "Secondary government guidance page that links to ASD as the primary source; cybercrime-wide rather than data-breach-specific, not financial-services-specific, and not a loss distribution quantile.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "mean_total_event_cost",
+          "value": 97000
+        },
+        "impact.likely": {
+          "rationale": "IBM's 2026 Australian financial-services average breach cost (AUD 6.31M), the exact cell this shard models, via verified secondary coverage because IBM gates the report PDF. The prior selection's own rationale said to revise when Australian financial-services breach-cost evidence exists - this is that revision. The value barely moves (AUD 6.2M converted-global to 6.31M local); the country and industry dimensions stop being bridged, size stays bridged (enterprise-leaning study, per-cell sample size unpublished). The IBM 2025 global average (USD 4.44M) and the UK financial-services figure (GBP 5.74M) remain on the records as the documented alternatives.",
+          "transform": "direct",
+          "evidence_id": "securitybrief_ibm_2026_au_finserv_breach_average_cost_aud",
+          "source_name": "SecurityBrief Australia coverage of IBM Cost of a Data Breach 2026",
+          "source_type": "news_report",
+          "url": "https://securitybrief.com.au/story/australia-breach-costs-hit-aud-4-22-million-ibm-says",
+          "publication_date": "2026-07-31",
+          "citation_detail": "Article states \"Financial services recorded the highest average breach cost at AUD $6.31 million per incident\", within coverage of IBM's 2026 Australian figures (Australian average AUD 4.22M; study basis 602 breached organisations globally, March 2025 to February 2026). Verified in the gathered artifact.",
+          "limitations": "Average across IBM's studied Australian financial-services breaches - IBM does not publish per-country-per-industry sample sizes, so this cell is thin by construction and the level should be treated as indicative. Enterprise-leaning studied population used for a mid-market org profile (size stays bridged); an average, not a distribution quantile. Secondary news coverage of the report rather than the gated primary PDF; the cited sentence was verified in the gathered artifact. Newer study year (2025-26 breaches) than the global 2025 anchor it replaces.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "mean_total_event_cost",
+          "value": 6300000
+        },
+        "impact.max": {
+          "rationale": "Official Australian privacy-law penalty cap selected as a local regulatory stress anchor until data-breach-specific Australian loss-tail evidence exists.",
+          "transform": "direct",
+          "evidence_id": "privacy_act_1988_au_body_corporate_serious_privacy_penalty_cap_2026",
+          "source_name": "Privacy Act 1988",
+          "source_type": "legislation",
+          "url": "https://www.legislation.gov.au/C2004A03712/latest/text",
+          "publication_date": "2026-06-04",
+          "citation_detail": "Section 13G(3), Federal Register compilation C2026C00227, compilation date 4 June 2026.",
+          "limitations": "Statutory maximum penalty cap, not a total event-loss estimate, not expected loss, not financial-services-specific, and actual penalties depend on regulator and court facts.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "statutory_penalty_cap",
+          "value": 50000000
+        }
+      },
+      "sourced_parameters": 6,
+      "total_parameters": 6,
+      "source_files": {
+        "module": "risk_modules/au_finance_data_breach_midmarket.yaml",
+        "scenario": "scenarios/data_breach.yaml",
+        "calibration": "calibrations/au_finance_data_breach.yaml",
+        "evidence": [
+          "evidence/au_finance_data_breach.yaml"
+        ]
+      },
+      "label": "AU · Australia Finance Data Breach Midmarket",
+      "scope": "AU · financial services · data breach"
+    },
+    {
+      "id": "au_finance_ransomware_midmarket",
+      "title": "Australia Finance Ransomware Midmarket",
+      "threat": "ransomware",
+      "status": "governed_starter",
+      "provenance_tier": "module_governed",
+      "confidence_summary": {
+        "medium": 6
+      },
+      "country": "AU",
+      "industry": "financial_services",
+      "company_size": "mid_market",
+      "currency": "AUD",
+      "maturity": {
+        "scenario_stage": "governed_starter",
+        "benchmark_status": "starter_country_resident_anchors_sector_bridged"
+      },
+      "description": "Governed-starter shard for a small or mid-market financial-services organization in Australia. All six direct parameters are source-backed and five of six are Australia-resident: frequency likely/max are the 2024/2023 Australian readings of the Sophos State of Ransomware surveys, impact likely is the Australian mean recovery cost (Sophos Australia 2025, excluding ransom payments), and impact max is Latitude's ASX-disclosed AUD 76M cyber-incident cost. The frequency floor remains a global Cyentia bridge, the Sophos anchors are all-sector, and the Latitude stress anchor is a large-company extortion event - each bridge is recorded on its evidence record.",
+      "frequency": {
+        "min": 0.1,
+        "likely": 0.54,
+        "max": 0.7,
+        "unit": "events_per_year"
+      },
+      "impact": {
+        "min": 97000,
+        "likely": 900000,
+        "max": 76000000,
+        "unit": "currency_per_event"
+      },
+      "loss_stages": [],
+      "org_profile": {
+        "employees": 450,
+        "annual_revenue_or_budget": 85000000,
+        "regulatory_intensity": "high"
+      },
+      "not_good_for": "Treating the all-sector Australian readings as financial-services rates, the stress frequency as a true tail percentile, or the Latitude enterprise extortion loss as a plausible mid-market ransomware outcome.",
+      "good_for": "An Australian ransomware shard whose frequency and typical-loss anchors are Australian survey readings and whose stress loss is a documented ASX-disclosed event, with every remaining bridge named per record.",
+      "tags": [
+        "au",
+        "financial_services",
+        "mid_market",
+        "ransomware"
+      ],
+      "provenance": {
+        "frequency.min": {
+          "rationale": "Global ransomware likelihood floor from Cyentia IRIS Ransomware - no Australian floor construct exists (OAIC notification counts are not org-level prevalence), so the floor stays a global bridge.",
+          "transform": "direct",
+          "evidence_id": "cyentia_global_ransomware_probability_2025",
+          "source_name": "Cyentia IRIS Ransomware",
+          "source_type": "ransomware_research",
+          "url": "https://www.cyentia.com/publication/iris-ransomware/",
+          "publication_date": "2025-04-21",
+          "citation_detail": "Key findings on the public IRIS Ransomware source page.",
+          "limitations": "Global cross-sector estimate; not Australia-specific and not financial-services-specific.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_loss_event",
+          "value": 0.1
+        },
+        "frequency.likely": {
+          "rationale": "Australian reading (54%) of the Sophos 2024 survey - country-resident, ransomware-specific attack prevalence, replacing the country-bridged global financial-services rate.",
+          "transform": "direct",
+          "evidence_id": "sophos_2024_au_ransomware_attack_rate_likely",
+          "source_name": "Sophos The State of Ransomware 2024 (archived snapshot)",
+          "source_type": "industry_survey",
+          "url": "https://web.archive.org/web/20240430145048if_/https://assets.sophos.com/X24WTUEQ/at/9brgj5n44hqvgsp5f5bqcps/sophos-state-of-ransomware-2024-wp.pdf",
+          "publication_date": "2024-04-30",
+          "citation_detail": "Attack-rate prose (printed page 3) reads \"the lowest reported attack rates were by respondents in Brazil (44%), Japan (51%), and Australia (54%)\"; the by-country chart carries the same 54% for Australia (n=330). Verified in the gathered snapshot artifact.",
+          "limitations": "Attack prevalence (\"hit by ransomware\"), not loss-event frequency - it counts organizations attacked, including attacks stopped before material loss, so it overstates loss-event frequency. All-sector Australian sample used for a financial-services shard; the sector dimension stays bridged (the global financial-services comparator read 65% in the same survey year). Survey population is organizations with 100-5,000 employees - the 450-employee org profile is inside the window, but the window is far broader than mid-market. Vendor-commissioned survey, n=330 Australian respondents. The Australian series is falling steeply (80% in 2022, 70% in 2023, 54% in 2024) and the 2025 edition dropped prevalence reporting entirely, so this reading cannot be refreshed like-for-like.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_incident",
+          "value": 0.54
+        },
+        "frequency.max": {
+          "rationale": "Prior-year Australian reading (70%, Sophos 2023 survey) as a genuinely distinct stress bound above the likely anchor, replacing the reuse of one figure for both likely and max.",
+          "transform": "direct",
+          "evidence_id": "sophos_2023_au_ransomware_attack_rate_stress",
+          "source_name": "Sophos The State of Ransomware 2023 (archived snapshot)",
+          "source_type": "industry_survey",
+          "url": "https://web.archive.org/web/20230511013336if_/https://assets.sophos.com/X24WTUEQ/at/c949g7693gsnjh9rb9gr8/sophos-state-of-ransomware-2023-wp.pdf",
+          "publication_date": "2023-05-01",
+          "citation_detail": "Additional Charts, \"Rate of Ransomware Attacks by Country. 2022 vs. 2023\" (printed page 18) - Australia (n=250 in 2022, n=200 in 2023) reads 80% for 2022 and 70% for 2023. The chart's numeric labels are present in the artifact text; the label-to-country pairing was verified visually on the rendered page of the gathered snapshot.",
+          "limitations": "Attack prevalence, not loss-event frequency (see the likely record). The stress anchor is one survey-year older than the likely anchor, taken from a declining series (80% 2022, 70% 2023, 54% 2024) - using an older, higher reading as the stress bound is a deliberate conservative choice, not a tail percentile. All-sector Australian sample; sector stays bridged. n=200 Australian respondents in the 2023 cycle. Vendor-commissioned.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_incident",
+          "value": 0.7
+        },
+        "impact.min": {
+          "rationale": "Locally gathered Australian medium-business cybercrime cost floor from Business Queensland guidance.",
+          "transform": "direct",
+          "evidence_id": "business_qld_au_medium_business_cybercrime_cost_2025",
+          "source_name": "Business Queensland Keeping your business cyber secure",
+          "source_type": "government_business_guidance",
+          "url": "https://www.business.qld.gov.au/running-business/digital-business/online-risk-security/cyber-security",
+          "publication_date": "2025-10-23",
+          "citation_detail": "Page section \"Keeping your business cyber secure\"; average cost of cybercrime in Australia list.",
+          "limitations": "Secondary government guidance page that links to ASD as the primary source; cybercrime-wide rather than ransomware-specific, not financial-services-specific, and not a loss distribution quantile.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "mean_total_event_cost",
+          "value": 97000
+        },
+        "impact.likely": {
+          "rationale": "Australian mean ransomware recovery cost (Sophos Australia 2025 country cut, excluding ransom payments) converted from USD to AUD, replacing the country-bridged global financial-services recovery cost.",
+          "transform": "currency_convert",
+          "evidence_id": "sophos_au_2025_ransomware_recovery_cost_usd",
+          "source_name": "Sophos The State of Ransomware in Australia 2025",
+          "source_type": "industry_survey",
+          "url": "https://assets.sophos.com/X24WTUEQ/at/k5krqsjhn4zbvj84448rhh/sophos-state-of-ransomware-in-australia-2025.pdf",
+          "publication_date": "2025-06-19",
+          "citation_detail": "Business impact section (printed page 3) reads \"the average (mean) bill incurred by Australian organizations to recover from a ransomware attack in the last year came in at just $0.65 million\"; the About page carries the same USD 650K headline tile. Verified in the gathered artifact.",
+          "limitations": "Excludes any ransom payments - the same survey reports a median Australian ransom payment of USD 350,000 among the 41% who paid, so the all-in cost of a paid incident can be materially higher than this anchor. Mean over 191 Australian organizations of 100-5,000 employees across all sectors, conditional on being hit; the sector dimension stays bridged for a financial-services shard. Self-reported, vendor-commissioned, and a steep one-year move (USD 2.37M to 0.65M) in a small sample suggests volatility - treat the level as indicative, not stable.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "cost_component",
+          "value": 900000
+        },
+        "impact.max": {
+          "rationale": "Documented Australian financial-services cyber-extortion loss (Latitude 1H23, AUD 76M pre-tax disclosed to the ASX), replacing the Cyentia global top-5% cyber-event bridge at nearly the same level (AUD 72.3M).",
+          "transform": "direct",
+          "evidence_id": "latitude_1h23_au_cyber_incident_cost_aud",
+          "source_name": "Latitude Group Holdings 1H23 Results Investor Presentation",
+          "source_type": "company_disclosure",
+          "url": "https://investors.latitudefinancial.com.au/DownloadFile.axd?file=%2FReport%2FComNews%2F20230818%2F02698845.pdf",
+          "publication_date": "2023-08-18",
+          "citation_detail": "Notable Items slide (printed page 22) reports Cyber at AUD 76M pre-tax for the half-year ended 30 June 2023 - AUD 11.8M costs incurred responding to the March 2023 incident plus AUD 64.1M provided for ID remediation and legal cost estimates. Verified in the gathered PDF text.",
+          "limitations": "A single documented event, not a loss-distribution percentile. The March 2023 incident was a data-theft extortion attack (a ransom was demanded and refused, consistent with government advice); encryption was not confirmed and Latitude describes it as a cyber incident, so the ransomware threat dimension stays bridged. Latitude is a large ASX-listed lender far above the mid-market org profile - the size dimension stays bridged, and an AUD 76M loss is a deliberate stress ceiling, not a plausible mid-market outcome. The disclosed figure excludes potential regulatory fines, class actions and future system uplift (understating the true tail) and ignores possible insurance recoveries (overstating net loss).",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "single_documented_event_loss",
+          "value": 76000000
+        }
+      },
+      "sourced_parameters": 6,
+      "total_parameters": 6,
+      "source_files": {
+        "module": "risk_modules/au_finance_ransomware_midmarket.yaml",
+        "scenario": "scenarios/au_finance_ransomware_midmarket.yaml",
+        "calibration": "calibrations/au_finance_ransomware.yaml",
+        "evidence": [
+          "evidence/au_finance_ransomware.yaml"
+        ]
+      },
+      "label": "AU · Australia Finance Ransomware Midmarket",
+      "scope": "AU · financial services · ransomware"
+    },
+    {
+      "id": "ca_finance_data_breach_midmarket",
+      "title": "Canada Finance Data Breach Midmarket",
+      "threat": "data_breach",
+      "status": "benchmark_review_candidate",
+      "provenance_tier": "module_governed",
+      "confidence_summary": {
+        "medium": 6
+      },
+      "country": "CA",
+      "industry": "financial_services",
+      "company_size": "mid_market",
+      "currency": "CAD",
+      "maturity": {
+        "scenario_stage": "governed_starter",
+        "benchmark_status": "benchmark_review_candidate"
+      },
+      "description": "Benchmark-review candidate Canadian financial-services data-breach shard. Frequency min, likely, and max use the StatCan CSCSC full-cell readings (finance and insurance, medium enterprises, incidents to steal personal or financial information) - a motive-classified incident construct, not confirmed breaches, with the stress anchor's 2021 cell carrying StatCan quality code C. Impact is expressed in CAD: likely uses the primary IBM Canada national average; min and max use Canadian insured-claims anchors from NetDiligence (Hacker-cause average, N=8, and the dataset maximum, N=84) converted with a Bank of Canada FX assumption - country-matched but thin cells, with the cause-of-loss taxonomy as the remaining threat bridge.",
+      "frequency": {
+        "min": 0.15,
+        "likely": 0.201,
+        "max": 0.273,
+        "unit": "events_per_year"
+      },
+      "impact": {
+        "min": 90000,
+        "likely": 6980000,
+        "max": 20800000,
+        "unit": "currency_per_event"
+      },
+      "loss_stages": [],
+      "org_profile": {
+        "employees": 450,
+        "annual_revenue_or_budget": 85000000,
+        "regulatory_intensity": "high"
+      },
+      "not_good_for": "Public benchmark-grade Canada impact claims, financial-services-specific Canadian cost claims, or Canada tail-loss claims without human caveat review.",
+      "good_for": "Canada launch-target workflow testing, benchmark-review discussion, and running an explicit CAD scenario with Canadian prevalence anchors.",
+      "tags": [
+        "ca",
+        "canada",
+        "financial_services",
+        "mid_market",
+        "data_breach"
+      ],
+      "provenance": {
+        "frequency.min": {
+          "rationale": "Lowest of the four StatCan CSCSC cycle readings for the shard's own cell (finance and insurance, medium enterprises, data-theft incidents; 2019, 15.0%, quality B).",
+          "transform": "direct",
+          "evidence_id": "statcan_cscsc_ca_finance_medium_steal_info_2019_floor",
+          "source_name": "Statistics Canada Table 22-10-0076-01 (Canadian Survey of Cyber Security and Cybercrime)",
+          "source_type": "official_statistics",
+          "url": "https://www150.statcan.gc.ca/n1/tbl/csv/22100076-eng.zip",
+          "publication_date": "2024-10-21",
+          "citation_detail": "Table cell \"Incidents to steal personal or financial information\" x \"Finance and insurance [52]\" x \"Medium size enterprises\", reference year 2019, reads 15.0% (quality B, very good); the lowest reading of the four survey cycles (2017 25.8, 2019 15.0, 2021 27.3, 2023 20.1). Medium is 50 to 249 employees (table footnote 8).",
+          "limitations": "Motive-classified construct, not confirmed breaches - counts impactful incidents aimed at stealing personal or financial information, so it can overstate confirmed-breach frequency (impactful attempts count) and understate it (breaches motivated by ransom or with unknown motive are classified under other incident types). StatCan medium is 50-249 employees while the shard org profile models 450 employees, which falls in StatCan large (250+); the same-cycle large-band cell reads 21.5%. Survey covers enterprises with 10 or more employees. Biennial; 2025 cycle expected around October 2026.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_incident",
+          "value": 0.15
+        },
+        "frequency.likely": {
+          "rationale": "Most recent StatCan CSCSC reading of the shard's own cell (2023, 20.1%, quality B).",
+          "transform": "direct",
+          "evidence_id": "statcan_cscsc_ca_finance_medium_steal_info_2023_likely",
+          "source_name": "Statistics Canada Table 22-10-0076-01 (Canadian Survey of Cyber Security and Cybercrime)",
+          "source_type": "official_statistics",
+          "url": "https://www150.statcan.gc.ca/n1/tbl/csv/22100076-eng.zip",
+          "publication_date": "2024-10-21",
+          "citation_detail": "Table cell \"Incidents to steal personal or financial information\" x \"Finance and insurance [52]\" x \"Medium size enterprises\", reference year 2023, reads 20.1% (quality B, very good). Medium is 50 to 249 employees (table footnote 8).",
+          "limitations": "Motive-classified construct, not confirmed breaches - counts impactful incidents aimed at stealing personal or financial information, so it can overstate confirmed-breach frequency (impactful attempts count) and understate it (breaches motivated by ransom or with unknown motive are classified under other incident types). StatCan medium is 50-249 employees while the shard org profile models 450 employees, which falls in StatCan large (250+); the same-cycle large-band cell reads 23.9%. Survey covers enterprises with 10 or more employees. Biennial; 2025 cycle expected around October 2026.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_incident",
+          "value": 0.201
+        },
+        "frequency.max": {
+          "rationale": "Highest of the four StatCan CSCSC cycle readings for the shard's own cell (2021, 27.3%; StatCan quality code C, use with caution - the weakest anchor, caveated on the record).",
+          "transform": "direct",
+          "evidence_id": "statcan_cscsc_ca_finance_medium_steal_info_2021_stress",
+          "source_name": "Statistics Canada Table 22-10-0076-01 (Canadian Survey of Cyber Security and Cybercrime)",
+          "source_type": "official_statistics",
+          "url": "https://www150.statcan.gc.ca/n1/tbl/csv/22100076-eng.zip",
+          "publication_date": "2024-10-21",
+          "citation_detail": "Table cell \"Incidents to steal personal or financial information\" x \"Finance and insurance [52]\" x \"Medium size enterprises\", reference year 2021, reads 27.3% - StatCan quality code C, \"use with caution\" - the highest reading of the four survey cycles. Medium is 50 to 249 employees (table footnote 8).",
+          "limitations": "The 2021 cell carries StatCan quality code C (use with caution) - the weakest of the three anchors; the adjacent large-band 2023 cell (23.9%, quality B) is the alternative stress anchor if the C-coded cell is rejected on review. Motive-classified construct, not confirmed breaches - counts impactful incidents aimed at stealing personal or financial information, so it can overstate confirmed-breach frequency (impactful attempts count) and understate it (breaches motivated by ransom or with unknown motive are classified under other incident types). StatCan medium is 50-249 employees while the shard org profile models 450 employees. Survey covers enterprises with 10 or more employees.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_incident",
+          "value": 0.273
+        },
+        "impact.min": {
+          "rationale": "Canadian Hacker-cause claims average (NetDiligence 2020-2024, N=8, USD 66K) as a conservative country-matched floor, converted to CAD; replaces the Cyentia global all-cyber bridge.",
+          "transform": "currency_convert",
+          "evidence_id": "netdiligence_2025_ca_hacker_claims_average_cost_usd",
+          "source_name": "NetDiligence Cyber Claims Study 2025 (Fifteenth Annual)",
+          "source_type": "cyber_insurance_claims_research",
+          "url": "https://netdiligence.com/cyber-claims-study-2025-report/",
+          "publication_date": "2025-09-23",
+          "citation_detail": "Claims from Canada section (page 49, Table 2, Canada Top Causes of Loss 2020-2024) reports the Hacker cause of loss at 8 claims with an average incident cost of USD 66K; verified in the gathered PDF text.",
+          "limitations": "N=8 Canadian Hacker claims over five years - a thin cell; an average used as a floor, not a minimum quantile. NetDiligence classifies claims by cause of loss, not outcome, so Hacker claims are unauthorized-intrusion claims that may or may not involve confirmed data compromise - the threat dimension remains bridged. All-sector dataset whose Canadian organizations average USD 654M annual revenue (enterprise-leaning vs the 85M CAD org profile). Insured claims only, so uninsured incidents and self-retained costs are invisible.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "mean_total_event_cost",
+          "value": 90000
+        },
+        "impact.likely": {
+          "rationale": "Primary IBM Canada national average breach cost (CA$6.98M, 2025), already reported in CAD, replacing the global IBM bridge and the low-confidence ITPro secondary. All-sector and enterprise-weighted, so treated as an upper-leaning mid-market likely anchor rather than a mid-market-specific figure.",
+          "transform": "direct",
+          "evidence_id": "ibm_canada_2025_average_breach_cost_cad",
+          "source_name": "IBM Canada newsroom release, Cost of a Data Breach Report 2025",
+          "source_type": "data_breach_cost_research",
+          "url": "https://canada.newsroom.ibm.com/2025-07-30-IBM-Report-Canadians-Data-Security-Under-Increased-Threat,-While-Breach-Costs-Surge",
+          "publication_date": "2025-07-30",
+          "citation_detail": "Release reports Canadian businesses are losing CA$6.98 million on average to data breaches, up 10.4% from CA$6.32 million in 2024; the financial sector leads at CA$9.97 million in 2025.",
+          "limitations": "Primary IBM Canada release, but an all-sector national average across studied breached organizations, not mid-market-specific or financial-services-specific; IBM's sample skews toward larger organizations, so this is an upper-leaning mid-market likely anchor.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "mean_total_event_cost",
+          "value": 6980000
+        },
+        "impact.max": {
+          "rationale": "Documented maximum of the Canadian insured-claims dataset (NetDiligence 2020-2024, N=84, USD 15M) converted to CAD; country-matched where the Cyentia USD 32M global extreme was not. Insured-claims truncation of the tail is caveated on the record, with the Cyentia alternative documented.",
+          "transform": "currency_convert",
+          "evidence_id": "netdiligence_2025_ca_maximum_incident_cost_usd",
+          "source_name": "NetDiligence Cyber Claims Study 2025 (Fifteenth Annual)",
+          "source_type": "cyber_insurance_claims_research",
+          "url": "https://netdiligence.com/cyber-claims-study-2025-report/",
+          "publication_date": "2025-09-23",
+          "citation_detail": "Claims from Canada section (page 49) reports the average five-year total incident cost for Canadian claims at USD 874K with a documented maximum of USD 15M (N=84 claims, 2020-2024); verified in the gathered PDF text.",
+          "limitations": "The maximum of 84 Canadian insured claims across all causes of loss, 2020-2024 - not data-breach-specific (threat bridged) and not a formal tail percentile. Insured-claims data structurally truncates the tail - uninsured organizations, self-retained costs above policy limits, and outlier Canadian breach losses (e.g. enterprise-scale events such as Desjardins, an order of magnitude larger) are invisible; review may prefer the wider Cyentia global extreme (USD 32M) if tail conservatism outweighs country specificity. Canadian organizations in the dataset average USD 654M annual revenue (enterprise-leaning vs the 85M CAD org profile), which makes the maximum an upper-leaning midmarket stress rather than an understated one.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "observed_extremum",
+          "value": 20800000
+        }
+      },
+      "sourced_parameters": 6,
+      "total_parameters": 6,
+      "source_files": {
+        "module": "risk_modules/ca_finance_data_breach_midmarket.yaml",
+        "scenario": "scenarios/ca_finance_data_breach_midmarket.yaml",
+        "calibration": "calibrations/ca_finance_data_breach.yaml",
+        "evidence": [
+          "evidence/ca_finance_data_breach.yaml"
+        ]
+      },
+      "label": "CA · Canada Finance Data Breach Midmarket",
+      "scope": "CA · financial services · data breach"
+    },
+    {
+      "id": "de_industrial_ransomware_midmarket",
+      "title": "Germany Industrial Ransomware Midmarket",
+      "threat": "ransomware",
+      "status": "benchmark_review_candidate",
+      "provenance_tier": "module_governed",
+      "confidence_summary": {
+        "medium": 6
+      },
+      "country": "DE",
+      "industry": "manufacturing",
+      "company_size": "mid_market",
+      "currency": "USD",
+      "maturity": {
+        "scenario_stage": "governed_starter",
+        "benchmark_status": "benchmark_review_candidate"
+      },
+      "description": "Benchmark-review candidate shard for a Germany mid-market industrial organization. Frequency likely/max use Germany company survey anchors; impact min uses a Germany ransom-payment lower band converted from EUR to USD; impact likely/max use global manufacturing ransomware survey bridges.",
+      "frequency": {
+        "min": 0.1,
+        "likely": 0.34,
+        "max": 0.59,
+        "unit": "events_per_year"
+      },
+      "impact": {
+        "min": 12000,
+        "likely": 1300000,
+        "max": 5000000,
+        "unit": "currency_per_event"
+      },
+      "loss_stages": [],
+      "org_profile": {
+        "employees": 650,
+        "annual_revenue_or_budget": 120000000,
+        "regulatory_intensity": "high"
+      },
+      "not_good_for": "Treating the stress impact as a true total-loss maximum or assuming the manufacturing loss bridges are Germany-specific claims data.",
+      "good_for": "Human benchmark review of a Germany industrial ransomware shard with all six direct parameters source-backed and extraction-mapped.",
+      "tags": [
+        "de",
+        "germany",
+        "manufacturing",
+        "industrial",
+        "mid_market",
+        "ransomware"
+      ],
+      "provenance": {
+        "frequency.min": {
+          "rationale": "Global ransomware likelihood floor from Cyentia IRIS Ransomware.",
+          "transform": "direct",
+          "evidence_id": "cyentia_global_ransomware_probability_2025_de_context",
+          "source_name": "Cyentia IRIS Ransomware",
+          "source_type": "ransomware_research",
+          "url": "https://www.cyentia.com/publication/iris-ransomware/",
+          "publication_date": "2025-04-21",
+          "citation_detail": "Key findings on the public IRIS Ransomware source page.",
+          "limitations": "Global cross-sector estimate; not Germany-specific, manufacturing-specific, or size-band-specific.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_loss_event",
+          "value": 0.1
+        },
+        "frequency.likely": {
+          "rationale": "Germany company ransomware damage rate from Bitkom Wirtschaftsschutz 2025.",
+          "transform": "direct",
+          "evidence_id": "bitkom_de_ransomware_damage_rate_2025",
+          "source_name": "Bitkom Wirtschaftsschutz 2025",
+          "source_type": "official_statistics",
+          "url": "https://www.bitkom.org/sites/main/files/2025-12/bitkom-studienbericht-wirtschaftsschutz-2025_2.pdf",
+          "publication_date": "2025-12-01",
+          "citation_detail": "Section 3.2, figure 11; 34% of surveyed German companies reported ransomware-caused damage in the prior 12 months.",
+          "limitations": "Cross-industry Germany company survey; not manufacturing-specific, not limited to mid-market organizations, and reflects damage-causing ransomware rather than all attack attempts.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_loss_event",
+          "value": 0.34
+        },
+        "frequency.max": {
+          "rationale": "Germany ransomware-affected survey-basis rate from Bitkom Wirtschaftsschutz 2025.",
+          "transform": "direct",
+          "evidence_id": "bitkom_de_ransomware_affected_rate_2025",
+          "source_name": "Bitkom Wirtschaftsschutz 2025",
+          "source_type": "official_statistics",
+          "url": "https://www.bitkom.org/sites/main/files/2025-12/bitkom-studienbericht-wirtschaftsschutz-2025_2.pdf",
+          "publication_date": "2025-12-01",
+          "citation_detail": "Section 3.2, figure 12; ransom-payment chart basis lists n=588 companies affected by ransomware attacks out of the n=1,002 survey base.",
+          "limitations": "Derived from survey basis counts rather than a standalone plotted rate; cross-industry, survey-based, and broader than damage-causing ransomware.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_incident",
+          "value": 0.59
+        },
+        "impact.min": {
+          "rationale": "Germany lower ransom-payment band converted from EUR to USD as a conservative impact floor.",
+          "transform": "currency_convert",
+          "evidence_id": "bitkom_de_ransomware_payment_floor_eur_2025",
+          "source_name": "Bitkom Wirtschaftsschutz 2025",
+          "source_type": "official_statistics",
+          "url": "https://www.bitkom.org/sites/main/files/2025-12/bitkom-studienbericht-wirtschaftsschutz-2025_2.pdf",
+          "publication_date": "2025-12-01",
+          "citation_detail": "Section 3.2, figure 12; ransom-payment bands include EUR 10,000-100,000, EUR 100,000-500,000, EUR 500,000-1M, and EUR 1M+.",
+          "limitations": "Payment-only lower-band anchor, not total event loss, recovery cost, downtime, or a Germany industrial claims distribution.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "cost_component",
+          "value": 12000
+        },
+        "impact.likely": {
+          "rationale": "Manufacturing-sector mean recovery cost excluding ransom from Sophos.",
+          "transform": "direct",
+          "evidence_id": "sophos_manufacturing_ransomware_recovery_cost_usd_2025",
+          "source_name": "Sophos State of Ransomware in Manufacturing and Production 2025",
+          "source_type": "industry_survey",
+          "url": "https://www.sophos.com/en-us/blog/the-state-of-ransomware-in-manufacturing-and-production-2025",
+          "publication_date": "2025-12-04",
+          "citation_detail": "Ransom demands, payments and attack recovery costs section; mean recovery cost excluding ransoms paid was USD 1.3M in 2025.",
+          "limitations": "Global manufacturing survey of organizations hit by ransomware; excludes ransoms paid, is not Germany-specific, and is not a full total-loss distribution.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "cost_component",
+          "value": 1300000
+        },
+        "impact.max": {
+          "rationale": "Manufacturing-sector USD 5M+ extreme ransom demand and payout threshold from Sophos.",
+          "transform": "direct",
+          "evidence_id": "sophos_manufacturing_ransomware_extreme_case_threshold_usd_2025",
+          "source_name": "Sophos State of Ransomware in Manufacturing and Production 2025",
+          "source_type": "industry_survey",
+          "url": "https://www.sophos.com/en-us/blog/the-state-of-ransomware-in-manufacturing-and-production-2025",
+          "publication_date": "2025-12-04",
+          "citation_detail": "Ransom demands, payments and attack recovery costs section; extreme USD 5M+ demand and payout cases saw a slight uptick.",
+          "limitations": "Threshold for extreme ransom demands and payouts, not total event loss, not Germany-specific, and not a formal percentile or upper bound.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "observed_extremum",
+          "value": 5000000
+        }
+      },
+      "sourced_parameters": 6,
+      "total_parameters": 6,
+      "source_files": {
+        "module": "risk_modules/de_industrial_ransomware_midmarket.yaml",
+        "scenario": "scenarios/de_industrial_ransomware_midmarket.yaml",
+        "calibration": "calibrations/de_industrial_ransomware.yaml",
+        "evidence": [
+          "evidence/de_industrial_ransomware.yaml"
+        ]
+      },
+      "label": "DE · Germany Industrial Ransomware Midmarket",
+      "scope": "DE · manufacturing · ransomware"
+    },
+    {
+      "id": "fr_finance_data_breach_midmarket",
+      "title": "France Finance Data Breach Midmarket",
+      "threat": "data_breach",
+      "status": "governed_starter",
+      "provenance_tier": "module_governed",
+      "confidence_summary": {
+        "medium": 6
+      },
+      "country": "FR",
+      "industry": "financial_services",
+      "company_size": "mid_market",
+      "currency": "USD",
+      "maturity": {
+        "scenario_stage": "governed_starter",
+        "benchmark_status": "starter_with_source_backed_france_direct_parameters"
+      },
+      "description": "France financial-services data-breach shard with all six direct parameters source-backed by France/EU anchors. Frequency min/likely/max use Eurostat France small/medium/large-enterprise confidential-data disclosure rates (2024). Impact.min uses the Asteres France average cyberattack cost, likely the primary IBM France 2025 national average breach cost (EUR 3.59M), and max the GDPR Article 83(5) statutory maximum fine (EUR 20M); all EUR anchors convert to USD via the reviewed ECB EUR/USD assumption. Caveats: the Eurostat frequency series excludes the financial sector (likely understating), the Asteres floor is an economy-wide all-cyber average, and the GDPR max is a statutory cap rather than a total event-loss distribution.",
+      "frequency": {
+        "min": 0.0198,
+        "likely": 0.0383,
+        "max": 0.073,
+        "unit": "events_per_year"
+      },
+      "impact": {
+        "min": 70000,
+        "likely": 4200000,
+        "max": 23300000,
+        "unit": "currency_per_event"
+      },
+      "loss_stages": [],
+      "org_profile": {
+        "employees": 450,
+        "annual_revenue_or_budget": 85000000,
+        "regulatory_intensity": "high"
+      },
+      "not_good_for": "France financial-services benchmark-grade claims until a financial-sector-specific frequency source replaces the Eurostat non-financial proxy and France-specific breach-cost floor/tail evidence replaces the Asteres all-cyber average and the GDPR statutory-cap stress anchor.",
+      "good_for": "Running a transparent France finance data-breach scenario with all six parameters source-backed by France/EU anchors, and as a contribution-workflow reference for a fully source-backed starter shard (it does not clear the automated benchmark gate, which requires financial-sector-specific evidence France's public data does not yet provide).",
+      "tags": [
+        "fr",
+        "france",
+        "financial_services",
+        "mid_market",
+        "data_breach",
+        "privacy_breach"
+      ],
+      "provenance": {
+        "frequency.min": {
+          "rationale": "Eurostat France small-enterprise (10-49) confidential-data disclosure rate 2024 (1.98%) as a conservative frequency floor. Non-financial-sector proxy.",
+          "transform": "direct",
+          "evidence_id": "eurostat_fr_data_disclosure_small_2024",
+          "source_name": "Eurostat ISOC_CISCE_IC - ICT security incidents by size class (France)",
+          "source_type": "official_statistics",
+          "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/isoc_cisce_ic?format=JSON&lang=EN&geo=FR&indic_is=E_SEC2ICNF&unit=PC_ENT",
+          "publication_date": "2025-10-08",
+          "citation_detail": "Eurostat E_SEC2ICNF, France 2024, size class 10-49 = 1.98% of enterprises had an incident leading to disclosure of confidential data (verified in gathered JSON).",
+          "limitations": "Eurostat survey population excludes the financial sector (nace_r2 = C10-S951_X_K), so this is a non-financial-sector proxy; self-reported disclosure incidents are narrower than \"any cyberattack\"; small-enterprise rate used as a floor.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_incident",
+          "value": 0.0198
+        },
+        "frequency.likely": {
+          "rationale": "Eurostat France medium-enterprise (50-249) confidential-data disclosure rate 2024 (3.83%) as the mid-market likely anchor. Non-financial-sector proxy, likely understating a more-targeted financial sector.",
+          "transform": "direct",
+          "evidence_id": "eurostat_fr_data_disclosure_medium_2024",
+          "source_name": "Eurostat ISOC_CISCE_IC - ICT security incidents by size class (France)",
+          "source_type": "official_statistics",
+          "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/isoc_cisce_ic?format=JSON&lang=EN&geo=FR&indic_is=E_SEC2ICNF&unit=PC_ENT",
+          "publication_date": "2025-10-08",
+          "citation_detail": "Eurostat E_SEC2ICNF, France 2024, size class 50-249 = 3.83% of enterprises had an incident leading to disclosure of confidential data (verified in gathered JSON); 250+ was 7.3%.",
+          "limitations": "Eurostat survey population excludes the financial sector, which is typically more targeted, so this likely understates; self-reported disclosure incidents are narrower than \"any cyberattack.\"",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_incident",
+          "value": 0.0383
+        },
+        "frequency.max": {
+          "rationale": "Eurostat France large-enterprise (250+) confidential-data disclosure rate 2024 (7.3%) as the frequency stress bound, keeping the band on one official size-class series at medium confidence. The higher CESIN survey-derived figure (0.208) is retained as a documented tail alternative.",
+          "transform": "direct",
+          "evidence_id": "eurostat_fr_data_disclosure_large_2024",
+          "source_name": "Eurostat ISOC_CISCE_IC - ICT security incidents by size class (France)",
+          "source_type": "official_statistics",
+          "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/isoc_cisce_ic?format=JSON&lang=EN&geo=FR&indic_is=E_SEC2ICNF&unit=PC_ENT",
+          "publication_date": "2025-10-08",
+          "citation_detail": "Eurostat E_SEC2ICNF, France 2024, size class 250+ = 7.3% of enterprises had an incident leading to disclosure of confidential data (verified in gathered JSON).",
+          "limitations": "Eurostat survey population excludes the financial sector, which is typically more targeted, so this likely understates; large-enterprise rate used as an upper bound for a mid-market shard.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_incident",
+          "value": 0.073
+        },
+        "impact.min": {
+          "rationale": "Asteres France average cost of a successful cyberattack (EUR 58,600), converted from EUR to USD, as a conservative France-specific impact floor replacing the global Cyentia bridge. Economy-wide all-cyber average, used only as a lower bound.",
+          "transform": "currency_convert",
+          "evidence_id": "asteres_fr_cyberattack_cost_2022",
+          "source_name": "Asteres - Le cout des cyberattaques reussies en France (2022)",
+          "source_type": "economic_impact_study",
+          "url": "https://asteres.fr/site/wp-content/uploads/2023/06/ASTERES-CRIP-Cout-des-cyberattaques-reussies-16062023.pdf",
+          "publication_date": "2023-06-16",
+          "citation_detail": "Asteres reports the average cost of a successful cyberattack in France at EUR 58,600 (direct cost EUR 25,600 excluding ransom); figure verified in gathered PDF text.",
+          "limitations": "Economy-wide France average across all organization sizes and all cyberattack types, not data-breach-specific, financial-services-specific, or a true minimum quantile. Used only as a conservative lower-bound anchor.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "mean_total_event_cost",
+          "value": 70000
+        },
+        "impact.likely": {
+          "rationale": "Primary IBM France 2025 national average breach cost (EUR 3.59M), converted from EUR to USD via the reviewed ECB EUR/USD assumption, replacing the global IBM average bridge. All-sector, enterprise-weighted France average used as an upper-leaning mid-market likely anchor.",
+          "transform": "currency_convert",
+          "evidence_id": "ibm_france_2025_national_average_breach_cost_eur",
+          "source_name": "Rapport IBM 2025 : coût d'une violation de données en France",
+          "source_type": "data_breach_cost_research",
+          "url": "https://fr.newsroom.ibm.com/Rapport-IBM-13-des-organisations-ont-signale-des-violations-de-modeles-ou-dapplications-dIA,-dont-97-ont-declare-ne-pas-disposer-de-controles-dacces-a-lIA-appropries",
+          "publication_date": "2025-07-30",
+          "citation_detail": "Primary IBM France release; 2025 France national average cost of a data breach is EUR 3.59M, with a financial-services sector average of EUR 4.65M, from 34 French organizations (March 2024-February 2025).",
+          "limitations": "All-sector France national average, not mid-market- or financial-services-specific; based on 34 French organizations and enterprise-weighted, so treat as an upper-leaning mid-market likely anchor. The France financial-services sub-figure (EUR 4.65M) rests on a small sample and is recorded as sector context, not the selected anchor.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "mean_total_event_cost",
+          "value": 4200000
+        },
+        "impact.max": {
+          "rationale": "GDPR Article 83(5) maximum administrative fine (EUR 20M absolute cap), converted from EUR to USD, as a France/EU regulatory stress anchor replacing the global Cyentia bridge. Statutory cap, not total event loss (mirrors the UK FCA-penalty and AU Privacy-Act-cap pattern).",
+          "transform": "currency_convert",
+          "evidence_id": "gdpr_article_83_max_fine_2018",
+          "source_name": "GDPR Article 83(5) maximum administrative fine (via CNIL)",
+          "source_type": "legislation",
+          "url": "https://www.cnil.fr/fr/cnil-direct/question/sanctions-quelles-sanctions-peuvent-etre-prononcees-par-la-cnil",
+          "publication_date": "2018-05-25",
+          "citation_detail": "CNIL states the GDPR maximum administrative fine for the most serious breaches is EUR 20 million or 4% of worldwide annual turnover, whichever is higher (page text: '20 millions', '4 %'); verified in gathered HTML.",
+          "limitations": "Statutory maximum penalty cap, not a total event-loss estimate, expected loss, or claims severity; actual fines depend on regulator and case facts.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "statutory_penalty_cap",
+          "value": 23300000
+        }
+      },
+      "sourced_parameters": 6,
+      "total_parameters": 6,
+      "source_files": {
+        "module": "risk_modules/fr_finance_data_breach_midmarket.yaml",
+        "scenario": "scenarios/fr_finance_data_breach_midmarket.yaml",
+        "calibration": "calibrations/fr_finance_data_breach.yaml",
+        "evidence": [
+          "evidence/fr_finance_data_breach.yaml"
+        ]
+      },
+      "label": "FR · France Finance Data Breach Midmarket",
+      "scope": "FR · financial services · data breach"
+    },
+    {
+      "id": "gb_finance_data_breach_midmarket",
+      "title": "United Kingdom Finance Data Breach Midmarket",
+      "threat": "data_breach",
+      "status": "benchmark_review_candidate",
+      "provenance_tier": "module_governed",
+      "confidence_summary": {
+        "medium": 6
+      },
+      "country": "GB",
+      "industry": "financial_services",
+      "company_size": "mid_market",
+      "currency": "GBP",
+      "maturity": {
+        "scenario_stage": "governed_starter",
+        "benchmark_status": "starter_with_source_backed_uk_direct_parameters"
+      },
+      "description": "Starter United Kingdom financial-services data-breach shard. Frequency uses official UK cyber breach/attack survey prevalence by business size, likely impact uses a UK financial-services data-breach cost anchor, and stress impact uses an FCA regulatory penalty anchor. It remains a governed starter because the stress anchor is a penalty, not a full event-loss distribution.",
+      "frequency": {
+        "min": 0.43,
+        "likely": 0.65,
+        "max": 0.69,
+        "unit": "events_per_year"
+      },
+      "impact": {
+        "min": 10000,
+        "likely": 5740000,
+        "max": 11164400,
+        "unit": "currency_per_event"
+      },
+      "loss_stages": [],
+      "org_profile": {
+        "employees": 450,
+        "annual_revenue_or_budget": 85000000,
+        "regulatory_intensity": "high"
+      },
+      "not_good_for": "Treating the FCA penalty stress anchor as total event loss, or making org-specific regulatory reporting decisions without local review.",
+      "good_for": "Human benchmark review of a UK financial-services data-breach shard with all six direct parameters source-backed and extraction-mapped.",
+      "tags": [
+        "gb",
+        "uk",
+        "financial_services",
+        "mid_market",
+        "data_breach",
+        "cyber_breach"
+      ],
+      "provenance": {
+        "frequency.min": {
+          "rationale": "Official UK all-business breach/attack prevalence used as a broad lower frequency anchor for a mid-market starter.",
+          "transform": "direct",
+          "evidence_id": "uk_dsit_2026_business_breach_prevalence_all",
+          "source_name": "Cyber Security Breaches Survey 2025/2026",
+          "source_type": "official_statistics",
+          "url": "https://www.gov.uk/government/statistics/cyber-security-breaches-survey-20252026/cyber-security-breaches-survey-20252026",
+          "publication_date": "2026-04-30",
+          "citation_detail": "Summary and Chapter 4 report that 43% of UK businesses identified a cyber security breach or attack in the last 12 months.",
+          "limitations": "Covers identified breaches or attacks, not privacy-only data breaches; hidden or unidentified events may be absent; all-business figure is not financial-services-specific.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_incident",
+          "value": 0.43
+        },
+        "frequency.likely": {
+          "rationale": "Official UK medium-business breach/attack prevalence used as the mid-market likely frequency anchor.",
+          "transform": "direct",
+          "evidence_id": "uk_dsit_2026_medium_business_breach_prevalence",
+          "source_name": "Cyber Security Breaches Survey 2025/2026",
+          "source_type": "official_statistics",
+          "url": "https://www.gov.uk/government/statistics/cyber-security-breaches-survey-20252026/cyber-security-breaches-survey-20252026",
+          "publication_date": "2026-04-30",
+          "citation_detail": "Summary and Chapter 4 report that medium businesses were more likely to have experienced a cyber breach or attack, at 65%.",
+          "limitations": "Covers identified breaches or attacks, not privacy-only data breaches; not financial-services-specific and may include high-volume low-impact events.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_incident",
+          "value": 0.65
+        },
+        "frequency.max": {
+          "rationale": "Official UK large-business breach/attack prevalence used as a stress frequency anchor for scale exposure.",
+          "transform": "direct",
+          "evidence_id": "uk_dsit_2026_large_business_breach_prevalence",
+          "source_name": "Cyber Security Breaches Survey 2025/2026",
+          "source_type": "official_statistics",
+          "url": "https://www.gov.uk/government/statistics/cyber-security-breaches-survey-20252026/cyber-security-breaches-survey-20252026",
+          "publication_date": "2026-04-30",
+          "citation_detail": "Summary and Chapter 4 report that large businesses experienced cyber breaches or attacks at 69%.",
+          "limitations": "Covers identified breaches or attacks, not privacy-only data breaches; larger organization prevalence may overstate mid-market frequency.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_incident",
+          "value": 0.69
+        },
+        "impact.min": {
+          "rationale": "Official UK 95th percentile perceived cost for medium/large most disruptive breaches or attacks, used as a conservative material-cost floor rather than expected breach cost.",
+          "transform": "direct",
+          "evidence_id": "uk_dsit_2026_medium_large_breach_cost_p95_gbp",
+          "source_name": "Cyber Security Breaches Survey 2025/2026",
+          "source_type": "official_statistics",
+          "url": "https://www.gov.uk/government/statistics/cyber-security-breaches-survey-20252026/cyber-security-breaches-survey-20252026",
+          "publication_date": "2026-04-30",
+          "citation_detail": "Summary reports that the top 5% perceived cost for the most disruptive breach or attack rose to GBP 10,000 for medium/large businesses.",
+          "limitations": "Perceived cost of the most disruptive breach or attack; broader than privacy breach cost; sample and cost definition differ from enterprise breach-cost studies. Confidence is medium only for use as a conservative UK mid-market material-cost floor.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "perceived_cost_self_reported",
+          "value": 10000
+        },
+        "impact.likely": {
+          "rationale": "UK financial-services average data-breach cost anchor from IBM's 2025 UK breach release.",
+          "transform": "direct",
+          "evidence_id": "ibm_uk_2025_financial_services_breach_average_cost_gbp",
+          "source_name": "IBM UK Cost of a Data Breach 2025 release",
+          "source_type": "data_breach_cost_research",
+          "url": "https://uk.newsroom.ibm.com/2025-cost-of-data-breach-UK",
+          "publication_date": "2025-07-30",
+          "citation_detail": "UK release states that financial services remained the costliest UK industry for data breaches, with an average cost of GBP 5.74 million in 2025.",
+          "limitations": "Surveyed/studied breach population; sponsor methodology; not mid-market-specific, not a full distribution, and not a regulator-reported loss table.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "mean_total_event_cost",
+          "value": 5740000
+        },
+        "impact.max": {
+          "rationale": "FCA Equifax cyber-breach penalty used as a source-backed UK regulatory stress anchor; not a total event-loss estimate.",
+          "transform": "direct",
+          "evidence_id": "fca_equifax_2023_cyber_breach_fine_gbp",
+          "source_name": "FCA fines Equifax Ltd over cyber security breach",
+          "source_type": "regulator_report",
+          "url": "https://www.fca.org.uk/news/press-releases/equifax-ltd-fine-cyber-security-breach",
+          "publication_date": "2023-10-13",
+          "citation_detail": "FCA press release states that Equifax Ltd was fined GBP 11,164,400 for failing to manage and monitor the security of UK consumer data outsourced to its US parent after a cyber breach.",
+          "limitations": "Regulatory penalty only; not total event loss, insurance claim severity, or a full tail distribution; the incident was a large credit-reference data breach, not a mid-market-specific loss sample. Confidence is medium only for use as a source-backed UK regulatory stress anchor.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "regulatory_penalty_issued",
+          "value": 11164400
+        }
+      },
+      "sourced_parameters": 6,
+      "total_parameters": 6,
+      "source_files": {
+        "module": "risk_modules/gb_finance_data_breach_midmarket.yaml",
+        "scenario": "scenarios/gb_finance_data_breach_midmarket.yaml",
+        "calibration": "calibrations/gb_finance_data_breach.yaml",
+        "evidence": [
+          "evidence/gb_finance_data_breach.yaml"
+        ]
+      },
+      "label": "GB · United Kingdom Finance Data Breach Midmarket",
+      "scope": "GB · financial services · data breach"
+    },
+    {
+      "id": "jp_manufacturing_ransomware_midmarket",
+      "title": "Japan Manufacturing Ransomware Midmarket",
+      "threat": "ransomware",
+      "status": "benchmark_review_candidate",
+      "provenance_tier": "module_governed",
+      "confidence_summary": {
+        "medium": 6
+      },
+      "country": "JP",
+      "industry": "manufacturing",
+      "company_size": "mid_market",
+      "currency": "USD",
+      "maturity": {
+        "scenario_stage": "governed_starter",
+        "benchmark_status": "benchmark_review_candidate"
+      },
+      "description": "Starter Japan manufacturing ransomware shard. Frequency likely/max are the Japanese readings of the Sophos State of Ransomware surveys (51% in 2024, 58% in 2023 - all-sector, so the sector dimension stays bridged; attack prevalence, which overstates loss-event frequency), above a global ransomware likelihood floor. Impact uses an official Japan restoration-cost floor and manufacturing-sector recovery/stress anchors - no Japan country cut of the recovery-cost survey exists, so the impact country bridge is structural. Frequency and impact share one \"hit by ransomware\" event basis.",
+      "frequency": {
+        "min": 0.1,
+        "likely": 0.51,
+        "max": 0.58,
+        "unit": "events_per_year"
+      },
+      "impact": {
+        "min": 6000,
+        "likely": 1300000,
+        "max": 5000000,
+        "unit": "currency_per_event"
+      },
+      "loss_stages": [],
+      "org_profile": {
+        "employees": 700,
+        "annual_revenue_or_budget": 130000000,
+        "regulatory_intensity": "moderate"
+      },
+      "not_good_for": "Benchmark claims or Japan-local manufacturing decisions without replacing estimated frequency values and full-loss bridges.",
+      "good_for": "Testing Japan manufacturing contribution workflow and running a transparent starter ransomware scenario with local report context.",
+      "tags": [
+        "jp",
+        "japan",
+        "manufacturing",
+        "mid_market",
+        "ransomware"
+      ],
+      "provenance": {
+        "frequency.min": {
+          "rationale": "Global ransomware likelihood floor from Cyentia IRIS Ransomware.",
+          "transform": "direct",
+          "evidence_id": "cyentia_global_ransomware_probability_2025_jp_context",
+          "source_name": "Cyentia IRIS Ransomware",
+          "source_type": "ransomware_research",
+          "url": "https://www.cyentia.com/publication/iris-ransomware/",
+          "publication_date": "2025-04-21",
+          "citation_detail": "Key findings on the public IRIS Ransomware source page.",
+          "limitations": "Global cross-sector estimate; not Japan-specific, manufacturing-specific, or size-band-specific.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_loss_event",
+          "value": 0.1
+        },
+        "frequency.likely": {
+          "rationale": "Japanese reading (51%) of the Sophos 2024 survey - country-resident, ransomware-specific attack prevalence, replacing the country-bridged global manufacturing rate.",
+          "transform": "direct",
+          "evidence_id": "sophos_2024_jp_ransomware_attack_rate_likely",
+          "source_name": "Sophos The State of Ransomware 2024 (archived snapshot)",
+          "source_type": "industry_survey",
+          "url": "https://web.archive.org/web/20240430145048if_/https://assets.sophos.com/X24WTUEQ/at/9brgj5n44hqvgsp5f5bqcps/sophos-state-of-ransomware-2024-wp.pdf",
+          "publication_date": "2024-04-30",
+          "citation_detail": "Attack-rate prose (printed page 3) reads \"the lowest reported attack rates were by respondents in Brazil (44%), Japan (51%), and Australia (54%)\"; the by-country chart carries the same 51% for Japan (n=500). Verified in the gathered snapshot artifact.",
+          "limitations": "Attack prevalence (\"hit by ransomware\"), not loss-event frequency - it counts organizations attacked, including attacks stopped before material loss, so it overstates loss-event frequency (in the 2025 manufacturing report only ~40% of attacks resulted in encryption). All-sector Japanese sample used for a manufacturing shard; the sector dimension stays bridged (the global manufacturing comparator read 65% in the same survey year, above Japan's all-sector rate). Survey population is organizations with 100-5,000 employees. Vendor-commissioned, n=500 Japanese respondents. The Japanese series is falling (61% in 2022, 58% in 2023, 51% in 2024) and the 2025 edition dropped prevalence reporting entirely, so this reading cannot be refreshed like-for-like.\n",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_incident",
+          "value": 0.51
+        },
+        "frequency.max": {
+          "rationale": "Prior-year Japanese reading (58%, Sophos 2023 survey) as a genuinely distinct stress bound above the likely anchor; the 2022 reading (61%) is the documented harsher alternative.",
+          "transform": "direct",
+          "evidence_id": "sophos_2023_jp_ransomware_attack_rate_stress",
+          "source_name": "Sophos The State of Ransomware 2023 (archived snapshot)",
+          "source_type": "industry_survey",
+          "url": "https://web.archive.org/web/20230511013336if_/https://assets.sophos.com/X24WTUEQ/at/c949g7693gsnjh9rb9gr8/sophos-state-of-ransomware-2023-wp.pdf",
+          "publication_date": "2023-05-01",
+          "citation_detail": "Additional Charts, \"Rate of Ransomware Attacks by Country. 2022 vs. 2023\" (printed page 18) - Japan (n=300) reads 61% for 2022 and 58% for 2023. The chart's numeric labels are present in the artifact text; the label-to-country pairing was verified visually on the rendered page of the gathered snapshot.",
+          "limitations": "Attack prevalence, not loss-event frequency (see the likely record). The stress anchor is one survey-year older than the likely anchor, taken from a declining series (61% 2022, 58% 2023, 51% 2024) - an older, higher reading used as a deliberate conservative stress bound, not a tail percentile. All-sector Japanese sample; sector stays bridged. n=300 Japanese respondents in the 2023 cycle. Vendor-commissioned.\n",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_incident",
+          "value": 0.58
+        },
+        "impact.min": {
+          "rationale": "Official Japan ransomware restoration-cost low-band anchor, converted from JPY to USD as a conservative local loss floor.",
+          "transform": "currency_convert",
+          "evidence_id": "npa_jp_ransomware_restoration_cost_low_band_jpy_2025",
+          "source_name": "National Police Agency of Japan 2025 Cyber Threat Situation Statistics Data",
+          "source_type": "law_enforcement_statistics",
+          "url": "https://www.npa.go.jp/publications/statistics/cybersecurity/data/R7/R07_jousei_data.xlsx",
+          "publication_date": "2026-03-09",
+          "citation_detail": "Workbook sheet 統計編P126; 16 of 89 cases reported investigation/restoration cost below JPY 1,000,000.",
+          "limitations": "Investigation/restoration cost band only; excludes broader business interruption, ransom, legal, customer, and strategic impacts.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "cost_component",
+          "value": 6000
+        },
+        "impact.likely": {
+          "rationale": "Manufacturing-sector mean recovery cost excluding ransom from Sophos.",
+          "transform": "direct",
+          "evidence_id": "sophos_manufacturing_ransomware_recovery_cost_usd_2025_jp_context",
+          "source_name": "Sophos State of Ransomware in Manufacturing and Production 2025",
+          "source_type": "industry_survey",
+          "url": "https://www.sophos.com/en-us/blog/the-state-of-ransomware-in-manufacturing-and-production-2025",
+          "publication_date": "2025-12-04",
+          "citation_detail": "Ransom demands, payments and attack recovery costs section; mean recovery cost excluding ransoms paid was USD 1.3M in 2025.",
+          "limitations": "Global survey of organizations hit by ransomware; not Japan-specific and excludes ransom payments.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "cost_component",
+          "value": 1300000
+        },
+        "impact.max": {
+          "rationale": "Manufacturing-sector USD 5M+ extreme ransom demand and payout threshold from Sophos.",
+          "transform": "direct",
+          "evidence_id": "sophos_manufacturing_ransomware_extreme_case_threshold_usd_2025_jp_context",
+          "source_name": "Sophos State of Ransomware in Manufacturing and Production 2025",
+          "source_type": "industry_survey",
+          "url": "https://www.sophos.com/en-us/blog/the-state-of-ransomware-in-manufacturing-and-production-2025",
+          "publication_date": "2025-12-04",
+          "citation_detail": "Ransom demands, payments and attack recovery costs section; extreme USD 5M+ demand and payout cases saw a slight uptick.",
+          "limitations": "Threshold for extreme ransom demands and payouts; not Japan-specific, not total event loss, and not a formal percentile.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "observed_extremum",
+          "value": 5000000
+        }
+      },
+      "sourced_parameters": 6,
+      "total_parameters": 6,
+      "source_files": {
+        "module": "risk_modules/jp_manufacturing_ransomware_midmarket.yaml",
+        "scenario": "scenarios/jp_manufacturing_ransomware_midmarket.yaml",
+        "calibration": "calibrations/jp_manufacturing_ransomware.yaml",
+        "evidence": [
+          "evidence/jp_manufacturing_ransomware.yaml"
+        ]
+      },
+      "label": "JP · Japan Manufacturing Ransomware Midmarket",
+      "scope": "JP · manufacturing · ransomware"
+    },
+    {
+      "id": "sg_finance_bec_midmarket",
+      "title": "Singapore Finance Business Email Compromise Midmarket",
+      "threat": "business_email_compromise",
+      "status": "governed_starter",
+      "provenance_tier": "module_governed",
+      "confidence_summary": {
+        "medium": 3,
+        "low": 3
+      },
+      "country": "SG",
+      "industry": "financial_services",
+      "company_size": "mid_market",
+      "currency": "USD",
+      "maturity": {
+        "scenario_stage": "governed_starter",
+        "benchmark_status": "starter_with_singapore_floor_ceiling_and_spf_losses"
+      },
+      "description": "Singapore financial-services business email compromise shard. Four of six anchors are Singapore-resident: the frequency floor is SPF reported BEC cases over SingStat enterprise counts (0.001), the stress frequency is CSA's all-cyber organisation prevalence used as a deliberate ceiling (0.80, threat bridged), and the likely and stress losses are SPF figures (pooled average per reported case; a documented interception case). The likely frequency keeps the US AFP payments-fraud prevalence and the loss floor keeps the DBIR median - both recorded as structural bridges because no Singapore equivalent exists publicly.",
+      "frequency": {
+        "min": 0.001,
+        "likely": 0.63,
+        "max": 0.8,
+        "unit": "events_per_year"
+      },
+      "impact": {
+        "min": 50000,
+        "likely": 130000,
+        "max": 6660000,
+        "unit": "currency_per_event"
+      },
+      "loss_stages": [],
+      "org_profile": {
+        "employees": 300,
+        "annual_revenue_or_budget": 90000000,
+        "regulatory_intensity": "high"
+      },
+      "not_good_for": "Singapore-local fraud benchmarking until payment-fraud, sector-denominator, and tail-loss evidence is reviewed.",
+      "good_for": "Testing Singapore finance BEC contribution workflow and running a transparent starter scenario with an explicit global likely-loss bridge.",
+      "tags": [
+        "sg",
+        "singapore",
+        "financial_services",
+        "mid_market",
+        "business_email_compromise",
+        "bec",
+        "payment_fraud"
+      ],
+      "provenance": {
+        "frequency.min": {
+          "rationale": "Singapore reported-BEC-case floor (SPF 377 cases over SingStat 371,000 enterprises = 0.001), replacing the US IC3-over-Census floor its own record said to revise toward.",
+          "transform": "direct",
+          "evidence_id": "spf_singstat_sg_bec_reported_case_rate_floor_2025",
+          "source_name": "SPF Annual Scam and Cybercrime Brief 2025 and SingStat Enterprise Landscape M600981",
+          "source_type": "derived_law_enforcement_statistical_benchmark",
+          "url": "https://www.police.gov.sg/-/media/SPF/Media-Room/Statistics/Annual-Scams-and-Cybercrime-Brief-2025/Annual-Scam-and-Cybercrime-Brief-2025.pdf",
+          "publication_date": "2026-02-26",
+          "citation_detail": "SPF Annex (printed page 22) reports 377 Business Email Compromise scam cases in 2025 (368 in 2024); SingStat Table M600981 row \"Enterprises Count, Total\" reads 371.0 thousand enterprises for 2025. 377 / 371,000 = 0.001016. Both cells verified in the gathered artifacts.",
+          "limitations": "Reported police cases only - BEC is heavily under-reported, so this is a hard floor, not an incidence estimate. The numerator counts all reported Singapore BEC cases across every sector and victim size while the denominator counts all enterprises, so the ratio is all-sector, all-size by construction (sector stays bridged for a financial-services shard). Case counts and enterprise counts come from different collection systems; multiple cases can involve one organisation. The SingStat API serves the latest table revision (rolling) - re-verify the denominator on re-gathering.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "reported_case_rate",
+          "value": 0.001
+        },
+        "frequency.likely": {
+          "rationale": "AFP 2025 US organization-level BEC prevalence kept as the threat-closest likely anchor - scouted 2026-08-03, no Singapore organisation-level BEC prevalence exists publicly, so this country bridge is structural.",
+          "transform": "direct",
+          "evidence_id": "afp_2025_bec_org_prevalence_frequency_likely_sg_context",
+          "source_name": "2025 AFP Payments Fraud and Control Survey Report",
+          "source_type": "industry_survey_bridge",
+          "url": "https://web.archive.org/web/20250707164054/https://www.financialprofessionals.org/training-resources/resources/survey-research-economic-data/details/payments-fraud",
+          "publication_date": "2025-08-26",
+          "citation_detail": "The 2025 AFP Payments Fraud and Control Survey reports business email compromise as the most common payments-fraud method, with 63% of organizations reporting BEC activity in 2024.",
+          "limitations": "GLOBAL BRIDGE, NOT SINGAPORE-SPECIFIC. US survey; measures organizations experiencing attempted or actual BEC, not confirmed loss events; respondents skew corporate-treasury and larger organizations. Scouted 2026-08-03 - no Singapore organisation-level BEC-specific prevalence exists publicly (the CSA Health Report 2023 publishes only an all-cyber prevalence, used as this shard's stress ceiling; SPF publishes case counts, not organisation prevalence), so this US anchor is kept as the threat-closest likely rate and the country bridge here is structural until CSA publishes per-incident-type prevalence.",
+          "confidence": "low",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_incident",
+          "value": 0.63
+        },
+        "frequency.max": {
+          "rationale": "CSA Singapore all-cyber organisation prevalence (over 8 in 10, taken as 0.80) as a deliberate stress ceiling - Singapore-resident but threat-bridged, the same construct role MYOB's all-cyber 81% plays for the Australian BEC stress anchor. Replaces the US AFP 2026 payments-fraud prevalence (0.74).",
+          "transform": "direct",
+          "evidence_id": "csa_2023_sg_org_cyber_incident_prevalence_stress",
+          "source_name": "CSA Singapore Cybersecurity Health Report 2023",
+          "source_type": "government_report",
+          "url": "https://isomer-user-content.by.gov.sg/36/1051bace-6be7-4c59-934a-e43c952a32ed/csa-singapore-cybersecurity-health-report-2023.pdf",
+          "publication_date": "2024-03-26",
+          "citation_detail": "Threat Landscape section reads \"OVER 8 IN 10 organisations have encountered a cybersecurity incident in a year\" (survey of 2,036 Singapore organisations, May-August 2023). Verified in the gathered artifact; \"over 8 in 10\" taken conservatively as 0.80.",
+          "limitations": "ALL-CYBER, NOT BEC-SPECIFIC - the report publishes no per-incident-type organisation prevalence, so this is a deliberate stress ceiling (any-incident prevalence bounds BEC prevalence from above), not a BEC rate; the threat dimension is bridged. All-sector, all-size Singapore sample (2,036 organisations including non-profits); sector stays bridged for a financial-services shard. Survey-based, single 2023 fielding - no trend series yet. Encounter construct includes incidents without material loss.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_incident",
+          "value": 0.8
+        },
+        "impact.min": {
+          "rationale": "Source-backed Verizon DBIR 2026 median BEC loss reused as a Singapore-context lower impact bridge.",
+          "transform": "direct",
+          "evidence_id": "verizon_dbir_2026_bec_median_loss_impact_floor_sg_context",
+          "source_name": "Verizon 2026 Data Breach Investigations Report",
+          "source_type": "breach_report_bridge",
+          "url": "https://www.verizon.com/business/resources/T766/reports/2026-dbir-data-breach-investigations-report.pdf",
+          "publication_date": "2026-05-20",
+          "citation_detail": "The 2026 Verizon DBIR reports the median loss for business email compromise incidents, based on FBI IC3 data, at approximately USD 50,000.",
+          "limitations": "GLOBAL BRIDGE, NOT SINGAPORE-SPECIFIC. Median of FBI IC3 complaint-reported (US) BEC losses; complaint-driven and self-reported; not a Singapore or mid-market figure. Revise when a Singapore BEC loss floor is reviewed.",
+          "confidence": "low",
+          "evidence_type": "source_backed",
+          "measurement_basis": "median_total_event_cost",
+          "value": 50000
+        },
+        "impact.likely": {
+          "rationale": "Singapore-specific average loss per reported BEC case (SPF, 2024-2025 pooled), replacing the FBI IC3 US complaint average previously used as Singapore context.",
+          "transform": "direct",
+          "evidence_id": "spf_2025_sg_bec_average_loss_per_reported_case_usd",
+          "source_name": "SPF Annual Scam and Cybercrime Brief 2025",
+          "source_type": "law_enforcement_statistics",
+          "url": "https://www.police.gov.sg/-/media/SPF/Media-Room/Statistics/Annual-Scams-and-Cybercrime-Brief-2025/Annual-Scam-and-Cybercrime-Brief-2025.pdf",
+          "publication_date": "2026-02-26",
+          "citation_detail": "SPF reports 377 business email compromise scam cases in 2025 with SGD 35.3 million lost, against 368 cases and SGD 88.5 million lost in 2024.",
+          "limitations": "Reported cases only, so this is an incidence-and-loss floor: BEC losses that were never reported to police are invisible. Covers all sectors, not financial services specifically, and is not mid-market-specific. Two-year pooling hides a 60 percent single-year swing in total losses, so the central estimate is stable but the underlying series is volatile. Currency converted at a single reference-rate date rather than at each incident's own rate.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "mean_total_event_cost",
+          "value": 130000
+        },
+        "impact.max": {
+          "rationale": "Source-backed documented Singapore BEC case loss (SPF, ~USD 6.66M) as the stress anchor, gross of recovery.",
+          "transform": "direct",
+          "evidence_id": "spf_2024_sg_bec_documented_case_impact_stress",
+          "source_name": "SPF Business Email Compromise scam interception case 2024",
+          "source_type": "law_enforcement_report",
+          "url": "https://www.police.gov.sg/media-hub/news/2024/20241008_international_cooperation_leading_to_the_interception",
+          "publication_date": "2024-10-08",
+          "citation_detail": "SPF reports that a Singapore-based investment banking firm initiated transfers of about USD 6.66 million to a scammer on 19-20 September 2024 in a business email compromise scam; SPF and US authorities intercepted over USD 5 million.",
+          "limitations": "One documented extreme Singapore BEC case (an investment banking firm), not a mid-market average or a loss percentile; over USD 5M was intercepted, but recovery is not guaranteed so the gross figure is modeled. Revise when a Singapore BEC loss distribution with tail quantiles is reviewed.",
+          "confidence": "low",
+          "evidence_type": "source_backed",
+          "measurement_basis": "single_documented_event_loss",
+          "value": 6660000
+        }
+      },
+      "sourced_parameters": 6,
+      "total_parameters": 6,
+      "source_files": {
+        "module": "risk_modules/sg_finance_bec_midmarket.yaml",
+        "scenario": "scenarios/sg_finance_bec_midmarket.yaml",
+        "calibration": "calibrations/sg_finance_bec.yaml",
+        "evidence": [
+          "evidence/sg_finance_bec.yaml"
+        ]
+      },
+      "label": "SG · Singapore Finance Business Email Compromise Midmarket",
+      "scope": "SG · financial services · business email compromise"
+    },
+    {
+      "id": "us_finance_bec_midmarket",
+      "title": "United States Finance Business Email Compromise Midmarket",
+      "threat": "business_email_compromise",
+      "status": "governed_starter",
+      "provenance_tier": "module_governed",
+      "confidence_summary": {
+        "medium": 5,
+        "low": 1
+      },
+      "country": "US",
+      "industry": "financial_services",
+      "company_size": "mid_market",
+      "currency": "USD",
+      "maturity": {
+        "scenario_stage": "governed_starter",
+        "benchmark_status": "starter_with_source_backed_us_likely_loss"
+      },
+      "description": "Starter United States financial-services BEC shard. Likely impact uses source-backed FBI IC3 complaint-average loss evidence; frequency and loss bounds remain explicit estimates until denominator-aware US sector evidence is reviewed.",
+      "frequency": {
+        "min": 0.004,
+        "likely": 0.63,
+        "max": 0.74,
+        "unit": "events_per_year"
+      },
+      "impact": {
+        "min": 50000,
+        "likely": 120000,
+        "max": 6400000,
+        "unit": "currency_per_event"
+      },
+      "loss_stages": [],
+      "org_profile": {
+        "employees": 450,
+        "annual_revenue_or_budget": 85000000,
+        "regulatory_intensity": "high"
+      },
+      "not_good_for": "Benchmark-grade US BEC frequency, sector-specific severity, or tail-loss decisions.",
+      "good_for": "Proving second-geography module contribution and reviewing US BEC likely-loss evidence.",
+      "tags": [
+        "us",
+        "financial_services",
+        "mid_market",
+        "bec",
+        "fraud"
+      ],
+      "provenance": {
+        "frequency.min": {
+          "rationale": "Source-backed reported-complaint floor - FBI IC3 2025 US BEC complaints over the US Census SUSB employer-firm denominator.",
+          "transform": "direct",
+          "evidence_id": "ic3_census_us_bec_reported_complaint_rate_floor_2026",
+          "source_name": "FBI IC3 2025 Annual Report and U.S. Census SUSB 2022",
+          "source_type": "derived_statistical_benchmark",
+          "url": "https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf",
+          "publication_date": "2026-04-16",
+          "citation_detail": "FBI IC3 2025 reported 24,768 US BEC complaints (all sectors); Census SUSB 2022 reports ~6,100,000 US employer firms (all industries).",
+          "limitations": "IC3 counts only complaints reported to the FBI and substantially undercounts true BEC incidence; numerator and denominator are both all-sector/all-industry, so this is an economy-wide reported floor, not financial-services-specific or mid-market-specific; it is a lower-bound floor, not a central likelihood. Confidence is medium for a reported-complaint floor, not for a likely BEC rate.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "reported_case_rate",
+          "value": 0.004
+        },
+        "frequency.likely": {
+          "rationale": "Source-backed likely-frequency exposure bridge from AFP 2025 US organization-level BEC prevalence (attempts/affected, not confirmed-loss events).",
+          "transform": "direct",
+          "evidence_id": "afp_2025_us_bec_org_prevalence_frequency_likely",
+          "source_name": "2025 AFP Payments Fraud and Control Survey Report",
+          "source_type": "industry_survey_bridge",
+          "url": "https://web.archive.org/web/20250707164054/https://www.financialprofessionals.org/training-resources/resources/survey-research-economic-data/details/payments-fraud",
+          "publication_date": "2025-08-26",
+          "citation_detail": "The 2025 AFP Payments Fraud and Control Survey reports business email compromise as the most common payments-fraud method, with 63% of organizations reporting BEC activity in 2024.",
+          "limitations": "Survey measures organizations experiencing attempted or actual BEC, not confirmed financial-loss events; AFP respondents skew toward corporate treasury and larger organizations (AFP reports 66% of BEC attempts target organizations with at least USD 1B revenue), so this overall prevalence likely overstates a mid-market financial-services rate; not financial-services-specific. Revise when mid-market-specific BEC event-frequency evidence is reviewed.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_incident",
+          "value": 0.63
+        },
+        "frequency.max": {
+          "rationale": "Source-backed stress-frequency bridge from AFP 2026 US organization-level BEC prevalence.",
+          "transform": "direct",
+          "evidence_id": "afp_2026_us_bec_org_prevalence_frequency_stress",
+          "source_name": "2026 AFP Payments Fraud and Control Survey Report",
+          "source_type": "industry_survey_bridge",
+          "url": "https://www.financialprofessionals.org/about/learn-more/press-releases/Details/over-75-percent-of-us-firms-experienced-payments-fraud-in-2025-while-ai-adoption-for-fraud-mitigation-lags",
+          "publication_date": "2026-04-14",
+          "citation_detail": "The 2026 AFP Payments Fraud and Control Survey (released April 14, 2026; 465 US treasury practitioners) reports that business email compromise affected 74% of organizations in 2025.",
+          "limitations": "Survey measures organizations experiencing attempted or actual BEC, not confirmed financial-loss events; AFP respondents skew toward corporate treasury and larger organizations, so this overall prevalence likely overstates a mid-market financial-services rate; it is drawn from the subsequent (2026) AFP edition rather than the same edition as the likely bridge; not financial-services-specific. Revise when mid-market-specific BEC event-frequency evidence is reviewed.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_incident",
+          "value": 0.74
+        },
+        "impact.min": {
+          "rationale": "Source-backed median BEC loss floor from Verizon DBIR 2026 (IC3-derived), below the IC3 mean used for likely.",
+          "transform": "direct",
+          "evidence_id": "verizon_dbir_2026_us_bec_median_loss_impact_floor",
+          "source_name": "Verizon 2026 Data Breach Investigations Report",
+          "source_type": "breach_report_bridge",
+          "url": "https://www.verizon.com/business/resources/T766/reports/2026-dbir-data-breach-investigations-report.pdf",
+          "publication_date": "2026-05-20",
+          "citation_detail": "The 2026 Verizon DBIR reports the median loss for business email compromise incidents, based on FBI IC3 data, at approximately USD 50,000.",
+          "limitations": "Median of FBI IC3 complaint-reported BEC losses as presented by Verizon DBIR; complaint-driven and self-reported, not financial-services-specific or mid-market-specific, and not a formal minimum quantile for this scenario.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "median_total_event_cost",
+          "value": 50000
+        },
+        "impact.likely": {
+          "rationale": "Source-backed FBI IC3 BEC average adjusted loss per complaint as the US likely loss anchor.",
+          "transform": "direct",
+          "evidence_id": "fbi_ic3_2025_us_bec_average_loss_per_complaint_usd",
+          "source_name": "FBI IC3 2025 Annual Report",
+          "source_type": "law_enforcement_report",
+          "url": "https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf",
+          "publication_date": "2026-04-16",
+          "citation_detail": "2025 Crime Types tables list Business Email Compromise with 24,768 complaints and USD 3,046,598,558 in adjusted losses.",
+          "limitations": "US IC3 complaint population; self-reported and complaint-driven; not financial-services-specific, mid-market-specific, or a full loss distribution.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "mean_total_event_cost",
+          "value": 120000
+        },
+        "impact.max": {
+          "rationale": "Source-backed documented largest funds-transfer-fraud single-event loss (Coalition, mid-market insurer book) as the stress anchor, gross of clawback.",
+          "transform": "direct",
+          "evidence_id": "coalition_2023_us_ftf_largest_loss_impact_stress",
+          "source_name": "Coalition funds transfer fraud largest clawback case",
+          "source_type": "cyber_insurer_claims_bridge",
+          "url": "https://www.coalitioninc.com/blog/how-coalition-recovered-usd5-5m-in-stolen-money-after-funds-transfer-fraud",
+          "publication_date": "2023-06-08",
+          "citation_detail": "Coalition reports a policyholder wired USD 6.4 million to a fraudulent account, described as Coalition's largest clawback case, of which 85% (USD 5.5 million) was later recovered.",
+          "limitations": "One documented extreme funds-transfer-fraud case from a cyber insurer's book, not a modeled loss percentile or a financial-services mid-market average; 85% was recovered via clawback in this instance, but recovery is not guaranteed, so the gross figure is modeled; BEC/FTF-specific but drawn from a single case. Revise when a US mid-market BEC loss distribution with tail quantiles is reviewed.",
+          "confidence": "low",
+          "evidence_type": "source_backed",
+          "measurement_basis": "single_documented_event_loss",
+          "value": 6400000
+        }
+      },
+      "sourced_parameters": 6,
+      "total_parameters": 6,
+      "source_files": {
+        "module": "risk_modules/us_finance_bec_midmarket.yaml",
+        "scenario": "scenarios/us_finance_business_email_compromise.yaml",
+        "calibration": "calibrations/us_finance_business_email_compromise.yaml",
+        "evidence": [
+          "evidence/us_finance_bec.yaml"
+        ]
+      },
+      "label": "US · United States Finance Business Email Compromise Midmarket",
+      "scope": "US · financial services · business email compromise"
+    },
+    {
+      "id": "us_finance_data_breach_midmarket",
+      "title": "United States Finance Data Breach Midmarket",
+      "threat": "data_breach",
+      "status": "benchmark_review_candidate",
+      "provenance_tier": "module_governed",
+      "confidence_summary": {
+        "medium": 6
+      },
+      "country": "US",
+      "industry": "financial_services",
+      "company_size": "mid_market",
+      "currency": "USD",
+      "maturity": {
+        "scenario_stage": "governed_starter",
+        "benchmark_status": "benchmark_review_candidate"
+      },
+      "description": "Starter United States financial-services data-breach shard. Impact is source-backed by NetDiligence cyber-insurance claims, matched on country, industry and size: an SME crisis-services floor, the financial-services SME five-year average incident cost, and the largest incident cost observed among financial-services SME claims. Frequency uses UK official breach/attack prevalence as a labeled cross-country bridge, because the US publishes breach counts but no clean per-firm annual breach prevalence. It remains a governed starter because frequency is bridged rather than US-specific.",
+      "frequency": {
+        "min": 0.43,
+        "likely": 0.65,
+        "max": 0.69,
+        "unit": "events_per_year"
+      },
+      "impact": {
+        "min": 152000,
+        "likely": 329000,
+        "max": 11500000,
+        "unit": "currency_per_event"
+      },
+      "loss_stages": [],
+      "org_profile": {
+        "employees": 450,
+        "annual_revenue_or_budget": 85000000,
+        "regulatory_intensity": "high"
+      },
+      "not_good_for": "Treating the bridged UK frequency as a US per-firm breach rate, or using the enterprise IBM financial-services average as an expected mid-market loss.",
+      "good_for": "A US mid-market financial-services data-breach shard with US-centric, size-appropriate impact anchors (NetDiligence SME) and a financial-services stress ceiling (IBM), useful for practitioner review of loss magnitude.",
+      "tags": [
+        "us",
+        "united_states",
+        "financial_services",
+        "mid_market",
+        "data_breach",
+        "cyber_breach"
+      ],
+      "provenance": {
+        "frequency.min": {
+          "rationale": "UK all-business breach/attack prevalence used as a broad lower frequency bridge.",
+          "transform": "direct",
+          "evidence_id": "us_finance_breach_frequency_min_uk_bridge",
+          "source_name": "Cyber Security Breaches Survey 2025/2026",
+          "source_type": "official_statistics",
+          "url": "https://www.gov.uk/government/statistics/cyber-security-breaches-survey-20252026/cyber-security-breaches-survey-20252026",
+          "publication_date": "2026-04-30",
+          "citation_detail": "The UK survey reports that 43% of all businesses identified a cyber security breach or attack in the last 12 months.",
+          "limitations": "UK official survey used as a bridge; not US-specific and not financial-services-specific; covers identified breaches or attacks, broader than privacy-only data breach.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_incident",
+          "value": 0.43
+        },
+        "frequency.likely": {
+          "rationale": "UK medium-business breach/attack prevalence used as the mid-market likely frequency bridge.",
+          "transform": "direct",
+          "evidence_id": "us_finance_breach_frequency_likely_uk_bridge",
+          "source_name": "Cyber Security Breaches Survey 2025/2026",
+          "source_type": "official_statistics",
+          "url": "https://www.gov.uk/government/statistics/cyber-security-breaches-survey-20252026/cyber-security-breaches-survey-20252026",
+          "publication_date": "2026-04-30",
+          "citation_detail": "The UK survey reports that 65% of medium businesses identified a cyber security breach or attack in the last 12 months.",
+          "limitations": "UK official survey used as a bridge; not US-specific and not financial-services-specific; may include high-volume low-impact events.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_incident",
+          "value": 0.65
+        },
+        "frequency.max": {
+          "rationale": "UK large-business breach/attack prevalence used as a stress frequency bridge.",
+          "transform": "direct",
+          "evidence_id": "us_finance_breach_frequency_max_uk_bridge",
+          "source_name": "Cyber Security Breaches Survey 2025/2026",
+          "source_type": "official_statistics",
+          "url": "https://www.gov.uk/government/statistics/cyber-security-breaches-survey-20252026/cyber-security-breaches-survey-20252026",
+          "publication_date": "2026-04-30",
+          "citation_detail": "The UK survey reports that 69% of large businesses identified a cyber security breach or attack in the last 12 months.",
+          "limitations": "UK official survey used as a bridge; not US-specific and not financial-services-specific; large-business prevalence can overstate mid-market likelihood.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_incident",
+          "value": 0.69
+        },
+        "impact.min": {
+          "rationale": "US SME crisis-services average used as a conservative direct-response cost floor.",
+          "transform": "direct",
+          "evidence_id": "us_finance_breach_impact_min_netdiligence_sme_crisis_usd",
+          "source_name": "NetDiligence Cyber Claims Study 2025 (Fifteenth Annual)",
+          "source_type": "cyber_insurance_claims_research",
+          "url": "https://netdiligence.com/cyber-claims-study-2025-report/",
+          "publication_date": "2025-09-23",
+          "citation_detail": "NetDiligence reports an average crisis-services cost of USD 152,000 for SME cyber claims (organizations under USD 2B revenue).",
+          "limitations": "Insured-claim crisis-services subset; not full total loss; SME band is broad (under USD 2B revenue) and not isolated to financial services.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "cost_component",
+          "value": 152000
+        },
+        "impact.likely": {
+          "rationale": "US financial-services SME five-year average incident cost - matched on country, industry and size.",
+          "transform": "direct",
+          "evidence_id": "us_finance_breach_impact_likely_netdiligence_fs_sme_5yr_usd",
+          "source_name": "NetDiligence Cyber Claims Study 2025 (Fifteenth Annual)",
+          "source_type": "cyber_insurance_claims_research",
+          "url": "https://netdiligence.com/cyber-claims-study-2025-report/",
+          "publication_date": "2025-09-23",
+          "citation_detail": "Figure 45 (Average Incident Cost - Financial Services, SMEs, N=579) reports a five-year average incident cost of USD 329K, with yearly averages of 201K (2020), 284K (2021), 310K (2022), 517K (2023) and 434K (2024). The accompanying text states the average annual revenue of financial-services organizations in the sample was USD 113M (maximum USD 1.9B).",
+          "limitations": "Insured-claim sample: covers claims of USD 1K or more that reached an insurer, so it excludes uninsured, self-absorbed and unreported losses, and is censored by policy limits and self-insured retentions. The SME band spans revenue up to USD 2B even though the financial-services sample averages USD 113M. Pooled 2020-2024 in nominal dollars with no inflation adjustment. RiskShard's mid_market band is defined by headcount while this segmentation is by revenue - the mapping is an explicit assumption, not a measurement.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "mean_total_event_cost",
+          "value": 329000
+        },
+        "impact.max": {
+          "rationale": "Largest incident cost observed among US financial-services SME claims; replaces an industry average that was standing in for a tail.",
+          "transform": "direct",
+          "evidence_id": "us_finance_breach_impact_max_netdiligence_fs_sme_observed_usd",
+          "source_name": "NetDiligence Cyber Claims Study 2025 (Fifteenth Annual)",
+          "source_type": "cyber_insurance_claims_research",
+          "url": "https://netdiligence.com/cyber-claims-study-2025-report/",
+          "publication_date": "2025-09-23",
+          "citation_detail": "Financial Services section: \"Financial services claims accounted for 6% of all claims and 8% of total incident cost at SMEs. Total incident cost ranged from $1K to $11.5M.\" (N=579 claims, 2020-2024, organizations with average annual revenue of USD 113M.)",
+          "limitations": "A single observed claim, not a modelled percentile - it is the maximum of 579 claims over five years, so it says nothing about how much worse a loss could be, and a larger sample would likely show a larger maximum. Insured-claim basis, so it is censored by policy limits and excludes uninsured or unreported losses. The SME band spans revenue up to USD 2B. Nominal 2020-2024 dollars, not inflation-adjusted.",
+          "confidence": "medium",
+          "evidence_type": "source_backed",
+          "measurement_basis": "observed_extremum",
+          "value": 11500000
+        }
+      },
+      "sourced_parameters": 6,
+      "total_parameters": 6,
+      "source_files": {
+        "module": "risk_modules/us_finance_data_breach_midmarket.yaml",
+        "scenario": "scenarios/us_finance_data_breach_midmarket.yaml",
+        "calibration": "calibrations/us_finance_data_breach.yaml",
+        "evidence": [
+          "evidence/us_finance_data_breach.yaml"
+        ]
+      },
+      "label": "US · United States Finance Data Breach Midmarket",
+      "scope": "US · financial services · data breach"
+    },
+    {
+      "id": "ai_enabled_fraud",
+      "title": "AI-Enabled Fraud",
+      "threat": "ai_enabled_fraud",
+      "status": "governed_starter",
+      "provenance_tier": "evidence_backed",
+      "confidence_summary": {
+        "low": 6
+      },
+      "country": null,
+      "industry": null,
+      "company_size": null,
+      "currency": "USD",
+      "maturity": {
+        "scenario_stage": "governed_starter",
+        "benchmark_status": "emergent_starter_source_backed_bridges_fast_rising_volatile"
+      },
+      "description": "Starter emergent AI-enabled (deepfake) fraud shard. All six parameters are source-backed but rest on vendor/analyst survey bridges and a single documented tail case (Arup, USD 25.6M), so this is a governed starter, not a human-approved benchmark. Deepfake-fraud prevalence is fast-rising and volatile: frequency measures deepfake attacks/attempts (not confirmed-loss events) and figures date quickly. Calibrate from calibrations/au_finance_ai_enabled_fraud.yaml; caveats live per-record in evidence/ai_enabled_fraud.yaml.",
+      "frequency": {
+        "min": 0.1,
+        "likely": 0.62,
+        "max": 0.92,
+        "unit": "events_per_year"
+      },
+      "impact": {
+        "min": 50000,
+        "likely": 450000,
+        "max": 25600000,
+        "unit": "currency_per_event"
+      },
+      "loss_stages": [],
+      "org_profile": null,
+      "not_good_for": null,
+      "good_for": null,
+      "tags": [],
+      "provenance": {
+        "frequency.min": {
+          "evidence_id": "deepfake_2024_fraud_attempt_prevalence_frequency_floor",
+          "source_name": "Deepfake business fraud impact statistics 2024",
+          "source_type": "industry_survey_bridge",
+          "url": "https://www.security.org/resources/deepfake-statistics/",
+          "publication_date": "2025-01-01",
+          "citation_detail": "Compiled 2024 deepfake statistics report that more than 10% of companies had experienced deepfake fraud attempts as of 2024.",
+          "limitations": "Secondary compilation of vendor survey data, low trust; deepfake fraud is fast-rising and volatile so any single figure dates quickly; attempts, not confirmed loss events; not sector- or size-specific. Revise as the deepfake evidence base matures.",
+          "confidence": "low",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_incident",
+          "value": 0.1
+        },
+        "frequency.likely": {
+          "evidence_id": "gartner_2025_deepfake_attack_prevalence_frequency_likely",
+          "source_name": "Gartner deepfake attack survey (September 2025)",
+          "source_type": "analyst_survey_bridge",
+          "url": "https://www.adaptivesecurity.com/blog/deepfake-statistics-2026-the-data-security-leaders-need-to-know",
+          "publication_date": "2025-09-01",
+          "citation_detail": "A Gartner survey (September 2025) found that 62% of organizations experienced a deepfake attack in the prior 12 months.",
+          "limitations": "Analyst survey accessed via secondary reporting, lower trust; measures deepfake attacks/attempts, not confirmed fraud-loss events; fast-rising and volatile; not sector- or size-specific. Revise as the evidence base matures.",
+          "confidence": "low",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_incident",
+          "value": 0.62
+        },
+        "frequency.max": {
+          "evidence_id": "regula_2024_deepfake_financial_loss_prevalence_frequency_stress",
+          "source_name": "Regula Deepfake Fraud Impact Survey 2024",
+          "source_type": "industry_survey_bridge",
+          "url": "https://regulaforensics.com/blog/impact-of-deepfakes-on-idv-regula-survey/",
+          "publication_date": "2024-10-01",
+          "citation_detail": "Regula's 2024 survey reports that 92% of businesses experienced financial loss due to a deepfake.",
+          "limitations": "Vendor (identity-verification) survey, lower trust; \"experienced financial loss due to a deepfake\" is broad and self-reported; fast-rising and volatile; not sector- or size-specific. Revise as the evidence base matures.",
+          "confidence": "low",
+          "evidence_type": "source_backed",
+          "measurement_basis": "org_prevalence_loss_event",
+          "value": 0.92
+        },
+        "impact.min": {
+          "evidence_id": "verizon_dbir_2026_median_payment_fraud_impact_floor_ai_fraud",
+          "source_name": "Verizon 2026 Data Breach Investigations Report",
+          "source_type": "breach_report_bridge",
+          "url": "https://www.verizon.com/business/resources/T766/reports/2026-dbir-data-breach-investigations-report.pdf",
+          "publication_date": "2026-05-20",
+          "citation_detail": "The 2026 Verizon DBIR reports the median loss for business email compromise incidents, based on FBI IC3 data, at approximately USD 50,000.",
+          "limitations": "GLOBAL BRIDGE. Median of FBI IC3 complaint-reported BEC losses used as an AI-fraud floor; not deepfake-specific and not a mid-market figure. Revise when a deepfake-specific loss floor is reviewed.",
+          "confidence": "low",
+          "evidence_type": "source_backed",
+          "measurement_basis": "median_total_event_cost",
+          "value": 50000
+        },
+        "impact.likely": {
+          "evidence_id": "regula_2024_average_deepfake_loss_impact_likely",
+          "source_name": "Regula Deepfake Fraud Impact Survey 2024",
+          "source_type": "industry_survey_bridge",
+          "url": "https://regulaforensics.com/blog/impact-of-deepfakes-on-idv-regula-survey/",
+          "publication_date": "2024-10-01",
+          "citation_detail": "The Regula survey states: on average, businesses across industries have lost nearly USD 450,000 to deepfakes. The largest group of respondents (28%) reported losses between USD 250,000 and USD 500,000.",
+          "limitations": "Vendor survey (identity-verification vendor with a product interest in the threat), low trust; an average of survey-reported losses, not a distribution quantile; deepfake losses are volatile and fast-rising. Revise as the evidence base matures.",
+          "confidence": "low",
+          "evidence_type": "source_backed",
+          "measurement_basis": "mean_total_event_cost",
+          "value": 450000
+        },
+        "impact.max": {
+          "evidence_id": "arup_2024_deepfake_case_impact_stress",
+          "source_name": "Arup Hong Kong deepfake CFO fraud case 2024",
+          "source_type": "news_report",
+          "url": "https://www.cnn.com/2024/02/04/asia/deepfake-cfo-scam-hong-kong-intl-hnk",
+          "publication_date": "2024-02-04",
+          "citation_detail": "A finance employee at engineering firm Arup made 15 transfers totaling about USD 25.6 million after a video call in which a deepfake impersonated the CFO and colleagues; the funds remain unrecovered.",
+          "limitations": "One documented extreme case at a large engineering firm, not a mid-market average or a loss percentile; a single incident, not a distribution. Revise when a deepfake-fraud loss distribution with tail quantiles is reviewed.",
+          "confidence": "low",
+          "evidence_type": "source_backed",
+          "measurement_basis": "single_documented_event_loss",
+          "value": 25600000
+        }
+      },
+      "sourced_parameters": 6,
+      "total_parameters": 6,
+      "source_files": {
+        "module": null,
+        "scenario": "scenarios/ai_enabled_fraud.yaml",
+        "calibration": null,
+        "evidence": [
+          "evidence/ai_enabled_fraud.yaml"
+        ]
+      },
+      "label": "AI-Enabled Fraud",
+      "scope": "no country stated · no sector stated · ai enabled fraud"
+    }
+  ],
+  "examples": [
+    {
+      "id": "fin_ransomware_v1",
+      "title": "Finance Ransomware Shard",
+      "currency": null,
+      "maturity": {
+        "scenario_stage": "demo_fixture",
+        "benchmark_status": null
+      },
+      "description": null,
+      "frequency": {
+        "min": 0.075,
+        "likely": 0.15,
+        "max": 0.3
+      },
+      "impact": {
+        "min": 140000.0,
+        "likely": 1400000,
+        "max": 50000000
+      },
+      "loss_stages": [],
+      "provenance": null,
+      "source_files": {
+        "scenario": "scenarios/fin_ransomware_v1.yaml"
+      }
+    },
+    {
+      "id": "gb_finance_data_breach_regulatory_chain",
+      "title": "UK Finance Data Breach with Regulatory Penalty Chain - Worked Example",
+      "currency": "GBP",
+      "maturity": {
+        "scenario_stage": "governed_starter",
+        "benchmark_status": null
+      },
+      "description": "ADR-0001 loss-chain worked example. The initiating event is a UK financial-services data breach, with frequency and impact reused from the source-backed gb_finance_data_breach_midmarket shard. A single downstream loss_stage adds a rare, high-severity ICO monetary penalty conditional on the breach - demonstrating a governance/regulatory loss form that a single-threat scenario cannot express.",
+      "frequency": {
+        "min": 0.43,
+        "likely": 0.65,
+        "max": 0.69
+      },
+      "impact": {
+        "min": 10000,
+        "likely": 5740000,
+        "max": 11164400
+      },
+      "loss_stages": [
+        {
+          "loss_mode": "regulatory_penalty",
+          "conditional_probability": {
+            "min": 0.001,
+            "likely": 0.0015,
+            "max": 0.005
+          },
+          "impact": {
+            "min": 50000,
+            "likely": 150000,
+            "max": 12700000
+          }
+        }
+      ],
+      "provenance": null,
+      "source_files": {
+        "scenario": "scenarios/gb_finance_data_breach_regulatory_chain.yaml"
+      }
+    },
+    {
+      "id": "insider_misuse",
+      "title": "Insider Misuse",
+      "currency": "USD",
+      "maturity": {
+        "scenario_stage": "governed_starter",
+        "benchmark_status": "starter_source_backed_frequency_generic_impact_bridges"
+      },
+      "description": "Starter Insider Misuse shard. Frequency uses three dedicated source-backed insider-prevalence bridges from one survey family (Cybersecurity Insiders/Gurucul: 51% six-or-more-attacks floor, 83% at-least-one 2024 likely, 90% 2025 stress; broad, incl. negligent insiders, so it overstates deliberate misuse — a prior 66%/76% pair was retracted 2026-08-01 as appearing in no primary source). Impact min/likely are insider-specific (Ponemon/DTEX 2023 per-incident costs); the catastrophic tail is the sole remaining generic cross-cyber Cyentia bridge. Governed starter, not a human-approved benchmark. Calibrate from calibrations/au_finance_insider_misuse.yaml; caveats live per-record in evidence/insider_misuse.yaml. (A separate demo_fixture, insider_threat.yaml, remains for fixtures.)",
+      "frequency": {
+        "min": 0.51,
+        "likely": 0.83,
+        "max": 0.9
+      },
+      "impact": {
+        "min": 680000,
+        "likely": 700000,
+        "max": 32000000
+      },
+      "loss_stages": [],
+      "provenance": null,
+      "source_files": {
+        "scenario": "scenarios/insider_misuse.yaml"
+      }
+    },
+    {
+      "id": "insider_threat",
+      "title": "Insider Threat",
+      "currency": null,
+      "maturity": {
+        "scenario_stage": "demo_fixture",
+        "benchmark_status": null
+      },
+      "description": null,
+      "frequency": {
+        "min": 0.2,
+        "likely": 0.5,
+        "max": 0.9
+      },
+      "impact": {
+        "min": 10000,
+        "likely": 50000,
+        "max": 200000
+      },
+      "loss_stages": [],
+      "provenance": null,
+      "source_files": {
+        "scenario": "scenarios/insider_threat.yaml"
+      }
+    },
+    {
+      "id": "ransomware",
+      "title": "Ransomware Attack",
+      "currency": null,
+      "maturity": {
+        "scenario_stage": "demo_fixture",
+        "benchmark_status": null
+      },
+      "description": null,
+      "frequency": {
+        "min": 0.1,
+        "likely": 0.3,
+        "max": 0.7
+      },
+      "impact": {
+        "min": 50000,
+        "likely": 150000,
+        "max": 500000
+      },
+      "loss_stages": [],
+      "provenance": null,
+      "source_files": {
+        "scenario": "scenarios/ransomware.yaml"
+      }
+    },
+    {
+      "id": "saas_ransomware",
+      "title": "SaaS Ransomware Attack",
+      "currency": null,
+      "maturity": {
+        "scenario_stage": "demo_fixture",
+        "benchmark_status": null
+      },
+      "description": null,
+      "frequency": {
+        "min": 0.05,
+        "likely": 0.2,
+        "max": 0.5
+      },
+      "impact": {
+        "min": 150000,
+        "likely": 450000,
+        "max": 1200000
+      },
+      "loss_stages": [],
+      "provenance": null,
+      "source_files": {
+        "scenario": "scenarios/saas_ransomware.yaml"
+      }
+    },
+    {
+      "id": "saas_ransomware_midmarket",
+      "title": "SaaS Ransomware Midmarket",
+      "currency": null,
+      "maturity": {
+        "scenario_stage": "demo_fixture",
+        "benchmark_status": null
+      },
+      "description": null,
+      "frequency": {
+        "min": 0.05,
+        "likely": 0.12,
+        "max": 0.25
+      },
+      "impact": {
+        "min": 70000,
+        "likely": 415000,
+        "max": 1350000
+      },
+      "loss_stages": [],
+      "provenance": null,
+      "source_files": {
+        "scenario": "scenarios/saas_ransomware_midmarket.yaml"
+      }
+    },
+    {
+      "id": "third_party_outage",
+      "title": "Third-Party Outage",
+      "currency": "USD",
+      "maturity": {
+        "scenario_stage": "governed_starter",
+        "benchmark_status": "starter_estimated_stress_frequency_generic_impact_bridges"
+      },
+      "description": "Starter Third-Party Outage shard. Frequency min/likely are source-backed BCI 2024 bridges (all-cause supply-chain disruption, overstates third-party-only); frequency.max is an ESTIMATED interpretive stress, so the shard calibrates with an assumption, not clean. Impact rests entirely on generic cross-cyber Cyentia loss bridges, NONE third-party-outage-specific. Governed starter, not a human-approved benchmark. Calibrate from calibrations/au_finance_third_party_outage.yaml; caveats live per-record in evidence/third_party_outage.yaml.",
+      "frequency": {
+        "min": 0.44,
+        "likely": 0.8,
+        "max": 0.9
+      },
+      "impact": {
+        "min": 266000,
+        "likely": 3000000,
+        "max": 32000000
+      },
+      "loss_stages": [],
+      "provenance": null,
+      "source_files": {
+        "scenario": "scenarios/third_party_outage.yaml"
+      }
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+# Only needed to regenerate risk-benchmarks.json from an upstream RiskShard
+# checkout. Nothing is required to use the data or serve the explorer page.
+PyYAML>=6.0

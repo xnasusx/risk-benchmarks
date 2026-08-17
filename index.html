@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Benchmarks: sourced starting points for cyber loss estimates</title>
+    <style>
+        :root {
+            --accent: #8d5860;
+            --accent-2: #c7848d;
+            --accent-soft: #f4dcdf;
+            --paper: #f7ebed;
+            --paper-2: #f0dee0;
+            --panel: #ffffff;
+            --ink: #3a3336;
+            --ink-2: #4d4548;
+            --muted: #7a7073;
+            --line: #d8c9cc;
+            --soft-line: rgba(58, 51, 54, .08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: var(--paper);
+            color: var(--ink);
+            line-height: 1.6;
+        }
+
+        /* Width and gutter match the other risk-lab tools so the portfolio page
+           can align its tab strip and copy to the same edge. */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        @media (max-width: 767px) {
+            .container { padding: 32px 16px; }
+        }
+
+        .section {
+            background: var(--panel);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--soft-line);
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 1.6rem;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+
+        .lede {
+            font-size: 1rem;
+            color: var(--ink-2);
+            max-width: 70ch;
+            margin-bottom: 8px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .stat {
+            background: var(--paper);
+            border: 1px solid var(--soft-line);
+            border-radius: 6px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            font-family: 'Georgia', serif;
+            color: var(--ink);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .control label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .control select {
+            padding: 8px;
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            font-size: 0.9rem;
+            background: #ffffff;
+            color: var(--ink);
+            min-width: 190px;
+        }
+
+        /* align-items: start so a card whose sources are expanded doesn't
+           stretch its neighbour into a column of dead space. */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            align-items: start;
+            gap: 20px;
+        }
+
+        @media (max-width: 640px) {
+            .grid { grid-template-columns: 1fr; }
+            .section { padding: 16px; }
+        }
+
+        .card {
+            background: var(--paper);
+            border: 1px solid var(--soft-line);
+            border-radius: 6px;
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+        .card-meta {
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin-bottom: 14px;
+        }
+
+        .status {
+            display: inline-block;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: var(--accent);
+            background: var(--accent-soft);
+            border-radius: 3px;
+            padding: 2px 6px;
+            margin-top: 6px;
+            margin-right: 4px;
+        }
+
+        /* The weaker tier is marked, not hidden: same evidence bar, but no
+           calibration record and no practitioner review behind it. */
+        .status.tier-evidence_backed {
+            color: #7a5a12;
+            background: #f7e9d4;
+        }
+
+        .status.tier-module_governed {
+            color: var(--muted);
+            background: var(--paper-2);
+        }
+
+        .status.conf {
+            color: var(--muted);
+            background: var(--paper-2);
+        }
+
+        .triangle {
+            display: grid;
+            grid-template-columns: 90px repeat(3, 1fr);
+            gap: 6px;
+            align-items: center;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+        }
+
+        .triangle-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .triangle-cell {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            padding: 6px;
+            text-align: center;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .triangle-head {
+            font-size: 0.65rem;
+            color: var(--muted);
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .warning {
+            background: var(--accent-soft);
+            border-left: 3px solid var(--accent);
+            padding: 10px 12px;
+            border-radius: 4px;
+            font-size: 0.82rem;
+            margin: 14px 0 10px;
+            line-height: 1.5;
+        }
+
+        details summary {
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--ink-2);
+        }
+
+        details ul { margin: 10px 0 0 18px; }
+
+        details li {
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        code {
+            font-size: 0.75rem;
+            color: var(--ink-2);
+        }
+
+        .confidence { font-style: italic; }
+
+        .limit {
+            font-size: 0.75rem;
+            margin-top: 2px;
+        }
+
+        a { color: var(--accent); }
+
+        .takeaway {
+            background: var(--accent-soft);
+            border: 1px solid var(--accent-2);
+            border-left: 4px solid var(--accent);
+        }
+
+        .takeaway h2 { margin-bottom: 12px; }
+
+        .takeaway li { margin: 0 0 10px 20px; }
+
+        footer {
+            font-size: 0.85rem;
+            color: var(--muted);
+            text-align: center;
+            padding-bottom: 20px;
+        }
+
+        .error {
+            border: 2px dashed var(--line);
+            border-radius: 6px;
+            padding: 30px;
+            text-align: center;
+            color: var(--muted);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="section">
+            <h1>Risk Benchmarks</h1>
+            <p class="lede">
+                Starting ranges for cyber loss estimates, where every number states where it came
+                from and what it will not support. Each shard gives an annual event frequency and a
+                per-event loss, as three-point estimates you can drop straight into a Monte Carlo.
+            </p>
+            <p class="lede">
+                The point is not that these numbers are right. It is that a range carrying six
+                citations and a range someone typed from memory should not look equally
+                authoritative &mdash; so here the sources travel with the numbers.
+            </p>
+            <div class="stats" id="stats"></div>
+        </div>
+
+        <div class="section">
+            <h2>The shards</h2>
+            <div class="controls">
+                <div class="control">
+                    <label for="country">Country</label>
+                    <select id="country"><option value="">All countries</option></select>
+                </div>
+                <div class="control">
+                    <label for="threat">Threat</label>
+                    <select id="threat"><option value="">All threats</option></select>
+                </div>
+            </div>
+            <div class="grid" id="grid">
+                <div class="error">Loading&hellip;</div>
+            </div>
+        </div>
+
+        <div class="section takeaway">
+            <h2>Using these honestly</h2>
+            <ul>
+                <li><strong>These are starters, not benchmarks.</strong> Read each shard's status.
+                    Most are governed starters, meaning the evidence is real but the shard has not
+                    cleared human benchmark review.</li>
+                <li><strong>Some frequencies are borrowed from another country.</strong> Where no
+                    local per-firm rate is published, a shard may bridge from one that is &mdash; the
+                    US data-breach frequency comes from a UK survey. Each such parameter says so in
+                    its own limitation.</li>
+                <li><strong>Currencies differ and there is no FX table here.</strong> Four
+                    currencies across eleven shards. Do not add them together without converting
+                    first, and state the rate and date when you do.</li>
+                <li><strong>Carry the caveats forward.</strong> If a number from here reaches a board
+                    deck, its limitation belongs on the same slide.</li>
+            </ul>
+        </div>
+
+        <footer id="footer"></footer>
+    </div>
+
+    <script>
+        const SYMBOLS = { USD: '$', AUD: 'A$', CAD: 'C$', GBP: '£' };
+
+        const money = (v, ccy) => (SYMBOLS[ccy] || ccy + ' ') + v.toLocaleString('en-US');
+        const rate = v => v.toLocaleString('en-US', { maximumFractionDigits: 4 });
+        const esc = s => String(s).replace(/[&<>"]/g, c =>
+            ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+        let DATA = null;
+
+        function triangle(label, t, fmt) {
+            return `
+                <div class="triangle">
+                    <span class="triangle-label">${label}</span>
+                    <span class="triangle-head">min</span>
+                    <span class="triangle-head">likely</span>
+                    <span class="triangle-head">max</span>
+                </div>
+                <div class="triangle">
+                    <span></span>
+                    <span class="triangle-cell">${fmt(t.min)}</span>
+                    <span class="triangle-cell">${fmt(t.likely)}</span>
+                    <span class="triangle-cell">${fmt(t.max)}</span>
+                </div>`;
+        }
+
+        // A shard where every parameter is "low" should not read like one where
+        // they are all "medium". Ordered worst-first so the weakest level leads.
+        function confidenceLabel(b) {
+            const s = b.confidence_summary || {};
+            const order = ['low', 'medium', 'high', 'unstated'];
+            const parts = order.filter(k => s[k]).map(k => `${s[k]} ${k}`);
+            return esc(parts.join(', ') || 'confidence unstated');
+        }
+
+        function card(b) {
+            const sources = Object.entries(b.provenance).map(([param, p]) => `
+                <li>
+                    <code>${esc(param)}</code> &mdash;
+                    ${p.url ? `<a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.source_name)}</a>`
+                            : esc(p.source_name || 'unattributed')}
+                    ${p.publication_date ? ` (${esc(p.publication_date)})` : ''}
+                    ${p.confidence ? `<span class="confidence"> &middot; ${esc(p.confidence)} confidence</span>` : ''}
+                    ${p.limitations ? `<div class="limit">${esc(p.limitations)}</div>` : ''}
+                </li>`).join('');
+
+            return `
+                <div class="card">
+                    <div class="card-title">${esc(b.title)}</div>
+                    <div class="card-meta">
+                        ${esc(b.scope)} &middot; ${esc(b.currency)}
+                        <div class="status">${esc((b.maturity.benchmark_status || 'status unstated').replace(/_/g, ' '))}</div>
+                        <div class="status tier-${esc(b.provenance_tier)}">${esc(b.provenance_tier.replace(/_/g, ' '))}</div>
+                        <div class="status conf">${confidenceLabel(b)}</div>
+                    </div>
+                    ${triangle('Frequency', b.frequency, rate)}
+                    ${triangle('Loss', b.impact, v => money(v, b.currency))}
+                    ${b.not_good_for ? `<div class="warning"><strong>Not good for:</strong> ${esc(b.not_good_for)}</div>` : ''}
+                    <details>
+                        <summary>Sources (${Object.keys(b.provenance).length})</summary>
+                        <ul>${sources}</ul>
+                    </details>
+                </div>`;
+        }
+
+        function render() {
+            const c = document.getElementById('country').value;
+            const t = document.getElementById('threat').value;
+            const rows = DATA.benchmarks.filter(b =>
+                (!c || b.country === c) && (!t || b.threat === t));
+            document.getElementById('grid').innerHTML = rows.length
+                ? rows.map(card).join('')
+                : '<div class="error">No shard matches that combination.</div>';
+        }
+
+        function fillSelect(id, values) {
+            const sel = document.getElementById(id);
+            values.forEach(v => {
+                const o = document.createElement('option');
+                o.value = v;
+                o.textContent = v.replace(/_/g, ' ');
+                sel.appendChild(o);
+            });
+            sel.addEventListener('change', render);
+        }
+
+        function boot(data) {
+            DATA = data;
+            const b = data.benchmarks;
+            const params = b.reduce((n, x) => n + Object.keys(x.provenance).length, 0);
+            const sources = new Set(b.flatMap(x =>
+                Object.values(x.provenance).map(p => p.source_name).filter(Boolean)));
+
+            document.getElementById('stats').innerHTML = [
+                [b.length, 'shards'],
+                [new Set(b.map(x => x.country).filter(Boolean)).size, 'countries'],
+                [params, 'parameters'],
+                [sources.size, 'distinct sources'],
+                [new Set(b.map(x => x.currency)).size, 'currencies'],
+            ].map(([v, l]) => `
+                <div class="stat">
+                    <div class="stat-value">${v}</div>
+                    <div class="stat-label">${l}</div>
+                </div>`).join('');
+
+            // A promoted shard has no country; it stays visible under "All
+            // countries" rather than appearing as a null option.
+            fillSelect('country', [...new Set(b.map(x => x.country).filter(Boolean))].sort());
+            fillSelect('threat', [...new Set(b.map(x => x.threat))].sort());
+            render();
+
+            const sha = (data.source.commit || '').slice(0, 7);
+            document.getElementById('footer').innerHTML =
+                `Generated from <a href="${esc(data.source.repo)}" target="_blank" rel="noopener">RiskShard</a>` +
+                `${sha ? ` at <code>${esc(sha)}</code>` : ''} &middot; ${esc(data.source.license)}`;
+        }
+
+        // The JSON is the product of this repo; the page reads it rather than
+        // embedding a second copy that could drift out of step. That means it
+        // needs a server -- see the README for the one-line local command.
+        fetch('risk-benchmarks.json')
+            .then(r => {
+                if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
+                return r.json();
+            })
+            .then(boot)
+            .catch(err => {
+                document.getElementById('grid').innerHTML =
+                    `<div class="error">Could not load <code>risk-benchmarks.json</code>
+                     (${esc(err.message)}).<br>Opening this file directly from disk will not work;
+                     serve the folder over HTTP instead.</div>`;
+            });
+    </script>
+</body>
+</html>

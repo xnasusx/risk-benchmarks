@@ -1,0 +1,27 @@
+# Agent and editor tooling
+.claude/
+.codex/
+.cursor/
+launch.json
+
+# Secrets
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+
+# Build and dependency output
+node_modules/
+dist/
+__pycache__/
+*.pyc
+
+# Local working copies of the upstream repo used to regenerate the data
+RiskShard/
+
+# OS noise
+.DS_Store
+Thumbs.db
